@@ -1202,16 +1202,16 @@ img { display: block; }
 <div id="page-home" class="page active">
 <!-- ══ NAVBAR ══ -->
 <nav class="nav" id="mainNav">
-  <a href="index.html" class="nav-logo">
+  <a href="#" onclick="showPage('home');return false;" class="nav-logo">
     <img src="https://i.ibb.co/PvMxjqz4/205abd4618296959713fbb9661c516e1.jpg" alt="Velvet Pantry" class="nav-logo-img">
     <span class="nav-brand">Velvet Pantry</span>
   </a>
 
   <ul class="nav-links">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="shop.html">Shop</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" onclick="showPage('home');return false;" class="active" data-page="home">Home</a></li>
+    <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
+    <li><a href="#" onclick="showPage('about');return false;" data-page="about">About</a></li>
+    <li><a href="#" onclick="showPage('contact');return false;" data-page="contact">Contact</a></li>
   </ul>
 
   <div class="nav-right">
@@ -1219,7 +1219,7 @@ img { display: block; }
       <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
       Pinterest
     </a>
-    <a href="shop.html" class="nav-cta">Shop Now</a>
+    <a href="#" onclick="showPage('shop');return false;" class="nav-cta">Shop Now</a>
     <button class="nav-burger" id="navBurger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1229,10 +1229,10 @@ img { display: block; }
 <!-- Mobile nav menu (hidden by default) -->
 <div id="mobileMenu" style="display:none;position:fixed;top:64px;left:0;right:0;z-index:499;background:rgba(21,13,8,.97);border-bottom:1px solid var(--border);padding:1.5rem 2rem;backdrop-filter:blur(16px);">
   <ul style="list-style:none;display:flex;flex-direction:column;gap:1.3rem;">
-    <li><a href="index.html" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-lt);">Home</a></li>
-    <li><a href="shop.html" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">Shop</a></li>
-    <li><a href="about.html" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">About</a></li>
-    <li><a href="contact.html" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">Contact</a></li>
+    <li><a href="#" onclick="showPage('home');closeMobileMenu();return false;" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-lt);">Home</a></li>
+    <li><a href="#" onclick="showPage('shop');closeMobileMenu();return false;" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">Shop</a></li>
+    <li><a href="#" onclick="showPage('about');closeMobileMenu();return false;" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">About</a></li>
+    <li><a href="#" onclick="showPage('contact');closeMobileMenu();return false;" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dk);opacity:.75;">Contact</a></li>
     <li><a href="https://in.pinterest.com/thevelvetpantry/" target="_blank" style="font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:#e60023;">Pinterest ↗</a></li>
   </ul>
 </div>
@@ -1266,8 +1266,8 @@ img { display: block; }
     <p class="hero-sub fu d2">Where beauty meets function, every single day</p>
     <p class="hero-desc fu d3">Hand-picked tools, cookware and pantry essentials for the passionate home cook. Everything featured is chosen with intention — nothing less.</p>
     <div class="hero-btns fu d4">
-      <a href="shop.html" class="btn-fill">Explore Products</a>
-      <a href="about.html" class="btn-ghost">Our Story</a>
+      <a href="#" onclick="showPage('shop');return false;" class="btn-fill">Explore Products</a>
+      <a href="#" onclick="showPage('about');return false;" class="btn-ghost">Our Story</a>
     </div>
   </div>
 
@@ -1314,7 +1314,7 @@ img { display: block; }
     <h2 class="section-title fu d1">The Art of a<br><em>Beautiful Kitchen</em></h2>
     <p class="fu d2">We believe your kitchen deserves the same thoughtfulness as the meals you create inside it. Every product in our collection is selected for quality, beauty, and lasting value.</p>
     <p class="fu d2">No clutter. No compromise. Only the tools and essentials that genuinely elevate your cooking experience.</p>
-    <a href="shop.html" class="btn-fill fu d3" style="margin-top:1.6rem;display:inline-block;">Browse the Collection</a>
+    <a href="#" onclick="showPage('shop');return false;" class="btn-fill fu d3" style="margin-top:1.6rem;display:inline-block;">Browse the Collection</a>
     <div class="intro-stats fu d4">
       <div>
         <span class="stat-num">100+</span>
@@ -1342,32 +1342,32 @@ img { display: block; }
   </div>
 
   <div class="cat-grid fu d2">
-    <a href="shop.html?cat=Cookware" class="cat-card">
+    <a href="#" onclick="showPage('shop','Cookware');return false;" class="cat-card">
       <span class="cat-icon">🍳</span>
       <span class="cat-name">Cookware</span>
       <span class="cat-sub">Pots · Pans · Skillets</span>
     </a>
-    <a href="shop.html?cat=Knives" class="cat-card">
+    <a href="#" onclick="showPage('shop','Knives');return false;" class="cat-card">
       <span class="cat-icon">🔪</span>
       <span class="cat-name">Knives & Boards</span>
       <span class="cat-sub">Chef Knives · Blocks</span>
     </a>
-    <a href="shop.html?cat=Bakeware" class="cat-card">
+    <a href="#" onclick="showPage('shop','Bakeware');return false;" class="cat-card">
       <span class="cat-icon">🥐</span>
       <span class="cat-name">Bakeware</span>
       <span class="cat-sub">Trays · Molds · Tools</span>
     </a>
-    <a href="shop.html?cat=Storage" class="cat-card">
+    <a href="#" onclick="showPage('shop','Storage');return false;" class="cat-card">
       <span class="cat-icon">🫙</span>
       <span class="cat-name">Pantry & Storage</span>
       <span class="cat-sub">Jars · Racks · Organizers</span>
     </a>
-    <a href="shop.html?cat=Appliances" class="cat-card">
+    <a href="#" onclick="showPage('shop','Appliances');return false;" class="cat-card">
       <span class="cat-icon">⚡</span>
       <span class="cat-name">Appliances</span>
       <span class="cat-sub">Blenders · Air Fryers</span>
     </a>
-    <a href="shop.html?cat=Tools" class="cat-card">
+    <a href="#" onclick="showPage('shop','Tools');return false;" class="cat-card">
       <span class="cat-icon">✨</span>
       <span class="cat-name">Gadgets & Tools</span>
       <span class="cat-sub">Peelers · Graters · More</span>
@@ -1384,13 +1384,13 @@ img { display: block; }
       <div class="eyebrow fu">Editor's Picks</div>
       <h2 class="section-title fu d1">This Season's <em>Favourites</em></h2>
     </div>
-    <a href="shop.html" class="view-all fu d2">View All Products →</a>
+    <a href="#" onclick="showPage('shop');return false;" class="view-all fu d2">View All Products →</a>
   </div>
 
   <div class="products-grid">
 
     <!-- Card 1 -->
-    <a href="shop.html" class="p-card fu d1">
+    <a href="#" onclick="showPage('shop');return false;" class="p-card fu d1">
       <span class="p-badge pb-best">Bestseller</span>
       <div class="p-img"><span class="p-emoji">🍳</span></div>
       <div class="p-info">
@@ -1404,7 +1404,7 @@ img { display: block; }
     </a>
 
     <!-- Card 2 -->
-    <a href="shop.html" class="p-card fu d2">
+    <a href="#" onclick="showPage('shop');return false;" class="p-card fu d2">
       <span class="p-badge pb-pick">VP Pick</span>
       <div class="p-img"><span class="p-emoji">🫙</span></div>
       <div class="p-info">
@@ -1418,7 +1418,7 @@ img { display: block; }
     </a>
 
     <!-- Card 3 -->
-    <a href="shop.html" class="p-card fu d3">
+    <a href="#" onclick="showPage('shop');return false;" class="p-card fu d3">
       <span class="p-badge pb-new">New Arrival</span>
       <div class="p-img"><span class="p-emoji">🔪</span></div>
       <div class="p-info">
@@ -1432,7 +1432,7 @@ img { display: block; }
     </a>
 
     <!-- Card 4 -->
-    <a href="shop.html" class="p-card fu d4">
+    <a href="#" onclick="showPage('shop');return false;" class="p-card fu d4">
       <span class="p-badge pb-best">Bestseller</span>
       <div class="p-img"><span class="p-emoji">🫕</span></div>
       <div class="p-info">
@@ -1841,7 +1841,7 @@ loadProducts();
     <p class="fu d2">Velvet Pantry participates in affiliate marketing programmes. This means that when you click on certain links on our website and complete a purchase, we may receive a small commission — at absolutely no extra cost to you.</p>
     <p class="fu d3">This commission helps us maintain this platform and continue discovering and sharing the best kitchen products with our community. Every rupee earned goes back into making Velvet Pantry better for you.</p>
     <p class="fu d3">We want to be completely transparent: our product recommendations are <strong style="color:var(--cream-dk);font-weight:400;">never</strong> influenced by whether or not a commission is earned. Every item featured on Velvet Pantry is selected purely on the basis of quality, usefulness, and our genuine belief in its value to you.</p>
-    <p class="fu d4">If you have any questions about our affiliate relationships or disclosure practices, please feel free to <a href="contact.html">reach out to us</a> — we are always happy to be transparent.</p>
+    <p class="fu d4">If you have any questions about our affiliate relationships or disclosure practices, please feel free to <a href="#" onclick="showPage('contact');return false;">reach out to us</a> — we are always happy to be transparent.</p>
   </div>
 </section>
 
