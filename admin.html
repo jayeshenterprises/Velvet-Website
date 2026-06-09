@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velvet Pantry — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#150d08;--bg-mid:#1e1109;--bg-lift:#2a160d;--bg-card:#211310;
+  --copper:#c4895a;--copper-lt:#ddb07e;--copper-dk:#8c5e38;
+  --copper-glow:rgba(196,137,90,0.12);
+  --cream:#f2e8da;--cream-dk:#d9c9b4;--muted:#8a6f5a;
+  --border:rgba(196,137,90,0.14);--border-hover:rgba(196,137,90,0.42);
+  --red:#c45a5a;--green:#5ac47a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;z-index:9999}
+
+/* ══ LOCK SCREEN ══ */
+#lockScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
+.lock-card{width:100%;max-width:400px;background:var(--bg-card);border:1px solid var(--border);padding:3rem 2.5rem;text-align:center;position:relative}
+.lock-card::before,.lock-card::after{content:'';position:absolute;width:18px;height:18px;border-color:var(--copper-dk);border-style:solid}
+.lock-card::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.lock-card::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.lock-logo{width:72px;height:72px;border-radius:50%;margin:0 auto 1.5rem;display:block;border:1px solid var(--border)}
+.lock-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:.3rem}
+.lock-title em{font-style:italic;color:var(--copper-lt)}
+.lock-sub{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+.lock-input{width:100%;background:var(--bg-lift);border:1px solid var(--border);color:var(--cream);padding:.85rem 1.1rem;font-family:'Jost',sans-serif;font-size:.9rem;font-weight:300;outline:none;transition:border-color .2s;margin-bottom:1rem;letter-spacing:.06em}
+.lock-input:focus{border-color:var(--copper-dk)}
+.btn-copper{width:100%;padding:.85rem;background:transparent;border:1px solid var(--copper-dk);color:var(--copper-lt);font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-copper:hover{background:var(--copper-glow);border-color:var(--copper)}
+.lock-err{color:var(--red);font-size:.75rem;margin-top:.75rem;display:none;letter-spacing:.05em}
+
+/* ══ ADMIN SHELL ══ */
+#adminShell{display:none}
+
+/* NAV */
+.admin-nav{position:sticky;top:0;z-index:100;background:rgba(21,13,8,.95);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:1.5rem;height:56px;backdrop-filter:blur(8px)}
+.admin-logo{width:30px;height:30px;border-radius:50%;border:1px solid var(--border)}
+.admin-brand{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--copper-lt);letter-spacing:.04em;white-space:nowrap}
+.admin-brand em{font-style:italic}
+.nav-pill{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:.2rem .55rem;border:1px solid var(--border);margin-left:auto}
+.btn-logout{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--copper)}
+
+/* MAIN LAYOUT */
+.admin-wrap{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);padding:1.2rem 1.5rem}
+.stat-num{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--copper-lt);line-height:1}
+.stat-lbl{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.3rem;display:block}
+
+/* SECTION HEADS */
+.section-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.2rem;padding-bottom:.7rem;border-bottom:1px solid var(--border)}
+.section-head h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--cream)}
+.section-head h2 em{font-style:italic;color:var(--copper-lt)}
+.section-head span{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* ADD PRODUCT FORM */
+.add-form{background:var(--bg-card);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;position:relative}
+.add-form::before,.add-form::after{content:'';position:absolute;width:14px;height:14px;border-color:var(--copper-dk);border-style:solid}
+.add-form::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.add-form::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.form-input,.form-select,.form-textarea{background:var(--bg-lift);border:1px solid var(--border);color:var(--cream);padding:.75rem .9rem;font-family:'Jost',sans-serif;font-size:.85rem;font-weight:300;outline:none;transition:border-color .2s;width:100%;appearance:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--copper-dk)}
+.form-textarea{min-height:80px;resize:vertical;line-height:1.5}
+.form-select option{background:var(--bg-lift);color:var(--cream)}
+
+/* Image upload area */
+.img-upload-area{border:1px dashed var(--border);background:var(--bg-lift);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
+.img-upload-area:hover{border-color:var(--copper-dk)}
+.img-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-upload-icon{font-size:1.6rem;margin-bottom:.4rem;display:block}
+.img-upload-text{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
+.img-upload-text strong{color:var(--copper-lt);font-weight:400}
+.img-preview{width:100%;height:100px;object-fit:cover;display:none;margin-top:.8rem;border:1px solid var(--border)}
+.img-status{font-size:.7rem;margin-top:.5rem;color:var(--muted)}
+.img-url-display{font-size:.65rem;color:var(--copper-lt);word-break:break-all;margin-top:.3rem;display:none}
+
+/* Form actions */
+.form-actions{display:flex;gap:.8rem;margin-top:1.2rem;align-items:center}
+.btn-add{padding:.8rem 2rem;background:transparent;border:1px solid var(--copper-dk);color:var(--copper-lt);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-add:hover:not(:disabled){background:var(--copper-glow);border-color:var(--copper)}
+.btn-add:disabled{opacity:.4;cursor:not-allowed}
+.btn-reset{padding:.8rem 1.2rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-reset:hover{border-color:var(--muted);color:var(--cream-dk)}
+.form-msg{font-size:.75rem;letter-spacing:.04em;margin-left:.5rem}
+.form-msg.ok{color:var(--green)}
+.form-msg.err{color:var(--red)}
+
+/* Featured toggle */
+.toggle-wrap{display:flex;align-items:center;gap:.7rem;padding:.75rem .9rem;background:var(--bg-lift);border:1px solid var(--border)}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:.25s;border-radius:22px}
+.toggle-slider::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--muted);left:3px;top:3px;transition:.25s}
+.toggle input:checked~.toggle-slider{border-color:var(--copper-dk)}
+.toggle input:checked~.toggle-slider::before{background:var(--copper-lt);transform:translateX(18px)}
+.toggle-lbl{font-size:.75rem;color:var(--cream-dk);letter-spacing:.04em}
+
+/* ══ PRODUCT TABLE ══ */
+.table-wrap{overflow-x:auto;margin-bottom:2.5rem}
+.admin-table{width:100%;border-collapse:collapse;min-width:680px}
+.admin-table th{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:.65rem .9rem;text-align:left;border-bottom:1px solid var(--border);background:var(--bg-lift);font-weight:400;white-space:nowrap}
+.admin-table td{padding:.75rem .9rem;border-bottom:1px solid rgba(196,137,90,0.07);vertical-align:middle;font-size:.82rem}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:rgba(196,137,90,0.03)}
+.prod-thumb{width:40px;height:40px;object-fit:cover;border:1px solid var(--border);display:block}
+.prod-thumb-placeholder{width:40px;height:40px;background:var(--bg-lift);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.prod-name{color:var(--cream);font-weight:400}
+.prod-cat{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.badge{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid}
+.badge.best{color:#c4a55a;border-color:rgba(196,165,90,.3);background:rgba(196,165,90,.08)}
+.badge.new{color:#5ab4c4;border-color:rgba(90,180,196,.3);background:rgba(90,180,196,.08)}
+.badge.pick{color:var(--copper-lt);border-color:var(--border);background:var(--copper-glow)}
+.badge.none{color:var(--muted);border-color:var(--border);background:transparent}
+.feat-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.feat-dot.yes{background:var(--green)}
+.feat-dot.no{background:var(--muted)}
+.btn-del{background:none;border:none;cursor:pointer;color:var(--muted);transition:color .2s;padding:.2rem .4rem;font-size:.8rem}
+.btn-del:hover{color:var(--red)}
+.del-icon svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;display:block}
+.empty-row td{text-align:center;padding:3rem;color:var(--muted);font-size:.8rem;letter-spacing:.06em}
+
+/* Loading spinner */
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--copper);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+#toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg-lift);border:1px solid var(--border);padding:.8rem 1.3rem;font-size:.78rem;letter-spacing:.05em;z-index:9998;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:300px}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.ok{border-color:rgba(90,196,122,.3);color:var(--green)}
+#toast.err{border-color:rgba(196,90,90,.3);color:var(--red)}
+
+/* Config bar */
+.config-bar{background:var(--bg-lift);border:1px solid var(--border);padding:1rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.config-label{font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.config-input{flex:1;min-width:200px;background:var(--bg-card);border:1px solid var(--border);color:var(--cream);padding:.55rem .8rem;font-family:'Jost',sans-serif;font-size:.75rem;outline:none;transition:border-color .2s}
+.config-input:focus{border-color:var(--copper-dk)}
+.btn-sm{padding:.5rem 1rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-sm:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
+.config-status{font-size:.7rem;color:var(--muted)}
+
+@media(max-width:640px){
+  .admin-wrap{padding:1.5rem 1rem}
+  .form-grid{grid-template-columns:1fr}
+  .admin-nav{padding:0 1rem}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOCK SCREEN ══ -->
+<div id="lockScreen">
+  <div class="lock-card">
+    <img src="https://i.ibb.co/PvMxjqz4/205abd4618296959713fbb9661c516e1.jpg" alt="Velvet Pantry" class="lock-logo">
+    <h1 class="lock-title">Velvet <em>Pantry</em></h1>
+    <p class="lock-sub">Admin Portal</p>
+    <input type="password" id="pwInput" class="lock-input" placeholder="Enter admin password" autocomplete="current-password">
+    <button class="btn-copper" onclick="checkPassword()">Enter Portal</button>
+    <p class="lock-err" id="lockErr">Incorrect password. Please try again.</p>
+  </div>
+</div>
+
+<!-- ══ ADMIN SHELL ══ -->
+<div id="adminShell">
+
+  <!-- NAV -->
+  <nav class="admin-nav">
+    <img src="https://i.ibb.co/PvMxjqz4/205abd4618296959713fbb9661c516e1.jpg" alt="VP" class="admin-logo">
+    <span class="admin-brand">Velvet <em>Pantry</em></span>
+    <span class="nav-pill">Admin Portal</span>
+    <button class="btn-logout" onclick="logout()">Sign Out ↗</button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-wrap">
+
+    <!-- STATS -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <span class="stat-num" id="statTotal">—</span>
+        <span class="stat-lbl">Total Products</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statFeatured">—</span>
+        <span class="stat-lbl">Featured</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statCats">6</span>
+        <span class="stat-lbl">Categories</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statBadged">—</span>
+        <span class="stat-lbl">Badged Items</span>
+      </div>
+    </div>
+
+    <!-- CONFIG -->
+    <div class="section-head">
+      <h2>Script <em>Configuration</em></h2>
+      <span>Google Apps Script URL</span>
+    </div>
+    <div class="config-bar">
+      <span class="config-label">Apps Script URL</span>
+      <input type="text" class="config-input" id="scriptUrlInput" placeholder="Paste your Google Apps Script URL here">
+      <button class="btn-sm" onclick="saveScriptUrl()">Save & Load</button>
+      <span class="config-status" id="configStatus"></span>
+    </div>
+
+    <!-- IMGBB KEY CONFIG -->
+    <div class="config-bar" style="margin-top:-1rem">
+      <span class="config-label">ImgBB API Key</span>
+      <input type="password" class="config-input" id="imgbbKeyInput" placeholder="Your ImgBB API key">
+      <button class="btn-sm" onclick="saveImgbbKey()">Save Key</button>
+      <span class="config-status" id="imgbbStatus"></span>
+    </div>
+
+    <!-- ADD PRODUCT -->
+    <div class="section-head" style="margin-top:2rem">
+      <h2>Add <em>Product</em></h2>
+      <span>Upload image + fill details</span>
+    </div>
+
+    <div class="add-form">
+      <div class="form-grid">
+
+        <!-- Product Name -->
+        <div class="form-group">
+          <label class="form-label">Product Name *</label>
+          <input type="text" class="form-input" id="fName" placeholder="e.g. Cast Iron Skillet">
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="fCat">
+            <option value="">— Select category —</option>
+            <option value="Cookware">🍳 Cookware</option>
+            <option value="Knives">🔪 Knives & Boards</option>
+            <option value="Bakeware">🥐 Bakeware</option>
+            <option value="Storage">🫙 Pantry & Storage</option>
+            <option value="Appliances">⚡ Appliances</option>
+            <option value="Tools">✨ Gadgets & Tools</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group full">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="fDesc" placeholder="Short description shown on product card..."></textarea>
+        </div>
+
+        <!-- Affiliate Link -->
+        <div class="form-group full">
+          <label class="form-label">Affiliate Link *</label>
+          <input type="url" class="form-input" id="fLink" placeholder="https://...">
+        </div>
+
+        <!-- Badge -->
+        <div class="form-group">
+          <label class="form-label">Badge</label>
+          <select class="form-select" id="fBadge">
+            <option value="">No badge</option>
+            <option value="Bestseller">Bestseller</option>
+            <option value="New">New Arrival</option>
+            <option value="VP Pick">VP Pick</option>
+          </select>
+        </div>
+
+        <!-- Featured toggle -->
+        <div class="form-group">
+          <label class="form-label">Featured on Homepage</label>
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" id="fFeatured">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-lbl">Show in homepage "Editor's Picks"</span>
+          </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group full">
+          <label class="form-label">Product Image</label>
+          <div class="img-upload-area" id="uploadArea">
+            <input type="file" id="fImage" accept="image/*" onchange="handleImageSelect(this)">
+            <span class="img-upload-icon">📷</span>
+            <p class="img-upload-text"><strong>Click to upload</strong> or drag & drop</p>
+            <p class="img-upload-text" style="margin-top:.2rem">PNG, JPG, WEBP — max 32MB</p>
+          </div>
+          <img id="imgPreview" class="img-preview" alt="Preview">
+          <p class="img-status" id="imgStatus"></p>
+          <p class="img-url-display" id="imgUrlDisplay"></p>
+        </div>
+
+      </div><!-- /form-grid -->
+
+      <div class="form-actions">
+        <button class="btn-add" id="btnAdd" onclick="addProduct()">Add to Sheet</button>
+        <button class="btn-reset" onclick="resetForm()">Clear Form</button>
+        <span class="form-msg" id="formMsg"></span>
+      </div>
+    </div><!-- /add-form -->
+
+    <!-- PRODUCT LIST -->
+    <div class="section-head">
+      <h2>All <em>Products</em></h2>
+      <span id="tableStatus">Loading…</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Badge</th>
+            <th>Featured</th>
+            <th>Link</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody">
+          <tr class="empty-row"><td colspan="7"><span class="spinner"></span> Loading products…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /admin-wrap -->
+</div><!-- /adminShell -->
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════
+const ADMIN_PASSWORD = 'velvetpantry2024'; // ← APNA PASSWORD YAHAN CHANGE KARO
+
+let SCRIPT_URL = localStorage.getItem('vp_script_url') || 'https://script.google.com/macros/s/AKfycbx2m3ApL_244Ks5aZj2rApux9pntv3rjDQ5ipDssBai0UmB_6sQnd2afSVeRy7HMqxI/exec';
+let IMGBB_KEY  = localStorage.getItem('vp_imgbb_key') || '';
+let uploadedImageUrl = '';
+let allProducts = [];
+
+const CAT_ICONS = {Cookware:'🍳',Knives:'🔪',Bakeware:'🥐',Storage:'🫙',Appliances:'⚡',Tools:'✨'};
+
+// ══════════════════════════════════════════════
+// LOCK SCREEN
+// ══════════════════════════════════════════════
+function checkPassword() {
+  const val = document.getElementById('pwInput').value;
+  const err = document.getElementById('lockErr');
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('adminShell').style.display = 'block';
+    loadConfig();
+    loadProducts();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+document.getElementById('pwInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+function logout() {
+  document.getElementById('adminShell').style.display = 'none';
+  document.getElementById('lockScreen').style.display = 'flex';
+  document.getElementById('pwInput').value = '';
+}
+
+// ══════════════════════════════════════════════
+// CONFIG MANAGEMENT
+// ══════════════════════════════════════════════
+function loadConfig() {
+  const urlInp = document.getElementById('scriptUrlInput');
+  const keyInp = document.getElementById('imgbbKeyInput');
+  urlInp.value = SCRIPT_URL;
+  keyInp.value = IMGBB_KEY;
+}
+
+function saveScriptUrl() {
+  const val = document.getElementById('scriptUrlInput').value.trim();
+  if (!val) { showToast('Please enter a valid Apps Script URL', 'err'); return; }
+  SCRIPT_URL = val;
+  localStorage.setItem('vp_script_url', val);
+  document.getElementById('configStatus').textContent = '✓ Saved';
+  setTimeout(() => document.getElementById('configStatus').textContent = '', 2000);
+  loadProducts();
+}
+
+function saveImgbbKey() {
+  const val = document.getElementById('imgbbKeyInput').value.trim();
+  IMGBB_KEY = val;
+  localStorage.setItem('vp_imgbb_key', val);
+  document.getElementById('imgbbStatus').textContent = '✓ Saved';
+  setTimeout(() => document.getElementById('imgbbStatus').textContent = '', 2000);
+}
+
+// ══════════════════════════════════════════════
+// IMAGE UPLOAD — IMGBB
+// ══════════════════════════════════════════════
+function handleImageSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  // Preview
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('imgPreview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('imgStatus').textContent = '📂 Image selected — will upload when you click "Add to Sheet"';
+  uploadedImageUrl = '';
+  document.getElementById('imgUrlDisplay').style.display = 'none';
+}
+
+async function uploadToImgBB(file) {
+  if (!IMGBB_KEY) {
+    showToast('ImgBB API key missing! Save it in the config above.', 'err');
+    throw new Error('No ImgBB key');
+  }
+  const formData = new FormData();
+  formData.append('image', file);
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: 'POST',
+    body: formData
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error?.message || 'ImgBB upload failed');
+  return data.data.url;
+}
+
+// ══════════════════════════════════════════════
+// LOAD PRODUCTS FROM GOOGLE SHEET
+// ══════════════════════════════════════════════
+async function loadProducts() {
+  document.getElementById('tableStatus').textContent = 'Loading…';
+  try {
+    const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+    const txt = await res.text();
+    allProducts = parseCSV(txt);
+    renderTable();
+    updateStats();
+    document.getElementById('tableStatus').textContent = `${allProducts.length} products loaded`;
+  } catch(e) {
+    document.getElementById('tableStatus').textContent = 'Could not load — check Script URL';
+    document.getElementById('productTableBody').innerHTML = '<tr class="empty-row"><td colspan="7">⚠ Could not reach Google Sheet. Check your Apps Script URL above.</td></tr>';
+  }
+}
+
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = splitLine(lines[0]).map(h => h.toLowerCase().trim());
+  return lines.slice(1).map(l => {
+    const v = splitLine(l); const o = {};
+    headers.forEach((h, i) => o[h] = (v[i] || '').trim());
+    return o;
+  }).filter(p => p.name && p.name.length > 0);
+}
+
+function splitLine(l) {
+  const r = []; let c = ''; let q = false;
+  for (let i = 0; i < l.length; i++) {
+    if (l[i] === '"') { q = !q; }
+    else if (l[i] === ',' && !q) { r.push(c); c = ''; }
+    else { c += l[i]; }
+  }
+  r.push(c); return r;
+}
+
+// ══════════════════════════════════════════════
+// ADD PRODUCT
+// ══════════════════════════════════════════════
+async function addProduct() {
+  const name  = document.getElementById('fName').value.trim();
+  const cat   = document.getElementById('fCat').value;
+  const desc  = document.getElementById('fDesc').value.trim();
+  const link  = document.getElementById('fLink').value.trim();
+  const badge = document.getElementById('fBadge').value;
+  const feat  = document.getElementById('fFeatured').checked ? 'yes' : 'no';
+  const imgFile = document.getElementById('fImage').files[0];
+  const msg   = document.getElementById('formMsg');
+
+  if (!name || !cat || !link) {
+    setMsg('Please fill Name, Category, and Affiliate Link.', 'err');
+    return;
+  }
+
+  const btn = document.getElementById('btnAdd');
+  btn.disabled = true;
+  btn.textContent = 'Working…';
+  setMsg('', '');
+
+  try {
+    // 1. Upload image if selected
+    let imageUrl = '';
+    if (imgFile) {
+      document.getElementById('imgStatus').textContent = '☁ Uploading image to ImgBB…';
+      imageUrl = await uploadToImgBB(imgFile);
+      uploadedImageUrl = imageUrl;
+      document.getElementById('imgStatus').textContent = '✓ Image uploaded';
+      const urlEl = document.getElementById('imgUrlDisplay');
+      urlEl.textContent = imageUrl;
+      urlEl.style.display = 'block';
+    }
+
+    // 2. POST to Apps Script
+    document.getElementById('imgStatus').textContent = imgFile ? '✓ Image uploaded — saving to Sheet…' : '';
+    const payload = { action: 'add', name, category: cat, description: desc, link, badge, featured: feat, image_url: imageUrl };
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.status === 'success' || data.result === 'success') {
+      showToast(`"${name}" added successfully!`, 'ok');
+      resetForm();
+      loadProducts();
+    } else {
+      throw new Error(data.message || 'Script returned an error');
+    }
+  } catch(e) {
+    setMsg('Error: ' + e.message, 'err');
+    showToast('Failed to add product. See form for details.', 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Add to Sheet';
+  }
+}
+
+// ══════════════════════════════════════════════
+// DELETE PRODUCT
+// ══════════════════════════════════════════════
+async function deleteProduct(rowIndex, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'delete', row: rowIndex })
+    });
+    const data = await res.json();
+    if (data.status === 'success' || data.result === 'success') {
+      showToast(`"${name}" deleted.`, 'ok');
+      loadProducts();
+    } else {
+      throw new Error(data.message || 'Could not delete');
+    }
+  } catch(e) {
+    showToast('Delete failed: ' + e.message, 'err');
+  }
+}
+
+// ══════════════════════════════════════════════
+// RENDER TABLE
+// ══════════════════════════════════════════════
+function renderTable() {
+  const tbody = document.getElementById('productTableBody');
+  if (allProducts.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No products yet. Add your first product above!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allProducts.map((p, i) => {
+    const rowNum = i + 2; // Sheet row (1-indexed, row 1 = header)
+    const imgHtml = (p.image_url || '').startsWith('http')
+      ? `<img src="${p.image_url}" class="prod-thumb" alt="${p.name}">`
+      : `<div class="prod-thumb-placeholder">${CAT_ICONS[p.category] || '🏠'}</div>`;
+    const badgeHtml = p.badge
+      ? `<span class="badge ${p.badge.toLowerCase().includes('best') ? 'best' : p.badge.toLowerCase().includes('new') ? 'new' : 'pick'}">${p.badge}</span>`
+      : `<span class="badge none">—</span>`;
+    const featHtml = (p.featured === 'yes' || p.featured === 'true')
+      ? `<span class="feat-dot yes" title="Featured"></span>`
+      : `<span class="feat-dot no" title="Not featured"></span>`;
+    const linkDomain = (() => { try { return new URL(p.link||'').hostname.replace('www.',''); } catch(e) { return p.link ? '↗ Link' : '—'; } })();
+    return `<tr>
+      <td>${imgHtml}</td>
+      <td><div class="prod-name">${p.name}</div><div class="prod-cat">${p.category || '—'}</div></td>
+      <td>${p.category || '—'}</td>
+      <td>${badgeHtml}</td>
+      <td>${featHtml}</td>
+      <td><a href="${p.link||'#'}" target="_blank" rel="noopener" style="color:var(--copper-lt);font-size:.72rem;letter-spacing:.04em;text-decoration:none;" title="${p.link||''}">${linkDomain}</a></td>
+      <td>
+        <button class="btn-del" onclick="deleteProduct(${rowNum}, '${p.name.replace(/'/g,"\\'")}')">
+          <span class="del-icon"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></span>
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════════
+function updateStats() {
+  document.getElementById('statTotal').textContent = allProducts.length;
+  document.getElementById('statFeatured').textContent = allProducts.filter(p => p.featured === 'yes' || p.featured === 'true').length;
+  document.getElementById('statBadged').textContent = allProducts.filter(p => p.badge && p.badge.length > 0).length;
+}
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function resetForm() {
+  document.getElementById('fName').value = '';
+  document.getElementById('fCat').value = '';
+  document.getElementById('fDesc').value = '';
+  document.getElementById('fLink').value = '';
+  document.getElementById('fBadge').value = '';
+  document.getElementById('fFeatured').checked = false;
+  document.getElementById('fImage').value = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgStatus').textContent = '';
+  document.getElementById('imgUrlDisplay').style.display = 'none';
+  document.getElementById('formMsg').textContent = '';
+  document.getElementById('formMsg').className = 'form-msg';
+  uploadedImageUrl = '';
+}
+
+function setMsg(text, type) {
+  const el = document.getElementById('formMsg');
+  el.textContent = text;
+  el.className = 'form-msg ' + type;
+}
+
+function showToast(text, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.className = 'show ' + type;
+  setTimeout(() => t.className = '', 3500);
+}
+</script>
+</body>
+</html>
