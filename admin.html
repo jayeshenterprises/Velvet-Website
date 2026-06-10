@@ -19,8 +19,8 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
 
-/* ══ LOCK SCREEN ══ */
-#lockScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;background:var(--bg)}
+/* LOCK */
+#lockScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
 .lock-card{width:100%;max-width:400px;background:var(--bg-card);border:1px solid var(--border);padding:3rem 2.5rem;text-align:center;position:relative}
 .lock-card::before,.lock-card::after{content:'';position:absolute;width:18px;height:18px;border-color:var(--copper-dk);border-style:solid}
 .lock-card::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
@@ -35,7 +35,7 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 .btn-copper:hover{background:var(--copper-glow);border-color:var(--copper)}
 .lock-err{color:var(--red);font-size:.75rem;margin-top:.75rem;display:none;letter-spacing:.05em}
 
-/* ══ SHELL ══ */
+/* SHELL */
 #adminShell{display:none}
 .admin-nav{position:sticky;top:0;z-index:100;background:rgba(21,13,8,.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:1.5rem;height:56px;backdrop-filter:blur(8px)}
 .admin-logo{width:30px;height:30px;border-radius:50%;border:1px solid var(--border)}
@@ -56,7 +56,15 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.2rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .section-head h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--cream)}
 .section-head h2 em{font-style:italic;color:var(--copper-lt)}
-.section-head span{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.section-head-right{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+
+/* ALERT BOX */
+.alert-box{padding:1rem 1.4rem;margin-bottom:1.5rem;border:1px solid;font-size:.8rem;line-height:1.7;display:flex;gap:.9rem;align-items:flex-start}
+.alert-box.warn{border-color:rgba(196,165,90,.3);background:rgba(196,165,90,.06);color:var(--cream-dk)}
+.alert-box.info{border-color:rgba(90,143,196,.25);background:rgba(90,143,196,.06);color:var(--cream-dk)}
+.alert-box.err{border-color:rgba(196,90,90,.3);background:rgba(196,90,90,.06);color:#e89090}
+.alert-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+.alert-box code{background:var(--bg-lift);border:1px solid var(--border);padding:.1rem .4rem;font-size:.72rem;color:var(--copper);font-family:monospace;word-break:break-all}
 
 /* CONFIG */
 .config-bar{background:var(--bg-lift);border:1px solid var(--border);padding:1rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
@@ -65,32 +73,28 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 .config-input:focus{border-color:var(--copper-dk)}
 .btn-sm{padding:.5rem 1rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-sm:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
-.config-status{font-size:.7rem;color:var(--green)}
+.btn-sm.primary{border-color:var(--copper-dk);color:var(--copper-lt)}
+.btn-sm.primary:hover{background:var(--copper-glow)}
+.config-ok{font-size:.7rem;color:var(--green)}
+.config-err{font-size:.7rem;color:var(--red)}
 
 /* FORM */
 .add-form{background:var(--bg-card);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;position:relative}
 .add-form::before,.add-form::after{content:'';position:absolute;width:14px;height:14px;border-color:var(--copper-dk);border-style:solid}
 .add-form::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
 .add-form::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
-.form-mode-bar{display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem;padding:.7rem 1rem;background:var(--bg-lift);border:1px solid var(--border)}
-.form-mode-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);font-weight:400}
-.form-mode-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--cream-dk);font-style:italic}
+.edit-banner{display:none;align-items:center;gap:.8rem;padding:.7rem 1rem;background:rgba(90,143,196,.08);border:1px solid rgba(90,143,196,.2);margin-bottom:1.5rem}
+.edit-banner-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+.edit-banner-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--cream-dk);font-style:italic}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-group{display:flex;flex-direction:column;gap:.4rem}
 .form-group.full{grid-column:1/-1}
 .form-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.form-label small{font-size:.6rem;letter-spacing:.08em;text-transform:none;color:var(--muted);opacity:.7;margin-left:.3rem}
 .form-input,.form-select,.form-textarea{background:var(--bg-lift);border:1px solid var(--border);color:var(--cream);padding:.75rem .9rem;font-family:'Jost',sans-serif;font-size:.85rem;font-weight:300;outline:none;transition:border-color .2s;width:100%;appearance:none}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--copper-dk)}
-.form-textarea{min-height:80px;resize:vertical;line-height:1.5}
+.form-textarea{min-height:80px;resize:vertical;line-height:1.6}
 .form-select option{background:var(--bg-lift);color:var(--cream)}
-.img-upload-area{border:1px dashed var(--border);background:var(--bg-lift);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
-.img-upload-area:hover{border-color:var(--copper-dk)}
-.img-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.img-upload-icon{font-size:1.6rem;margin-bottom:.4rem;display:block}
-.img-upload-text{font-size:.75rem;color:var(--muted)}
-.img-upload-text strong{color:var(--copper-lt);font-weight:400}
-.img-preview{width:120px;height:120px;object-fit:cover;display:none;margin-top:.8rem;border:1px solid var(--border)}
-.img-status{font-size:.7rem;margin-top:.5rem;color:var(--muted)}
 .toggle-wrap{display:flex;align-items:center;gap:.7rem;padding:.75rem .9rem;background:var(--bg-lift);border:1px solid var(--border)}
 .toggle{position:relative;width:40px;height:22px;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0;position:absolute}
@@ -99,88 +103,95 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 .toggle input:checked~.toggle-slider{border-color:var(--copper-dk)}
 .toggle input:checked~.toggle-slider::before{background:var(--copper-lt);transform:translateX(18px)}
 .toggle-lbl{font-size:.75rem;color:var(--cream-dk)}
-.form-actions{display:flex;gap:.8rem;margin-top:1.2rem;align-items:center;flex-wrap:wrap}
-.btn-add{padding:.8rem 2rem;background:transparent;border:1px solid var(--copper-dk);color:var(--copper-lt);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.btn-add:hover:not(:disabled){background:var(--copper-glow);border-color:var(--copper)}
-.btn-add:disabled{opacity:.4;cursor:not-allowed}
-.btn-cancel-edit{padding:.8rem 1.4rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:none}
-.btn-cancel-edit:hover{border-color:var(--red);color:var(--red)}
-.btn-reset{padding:.8rem 1.2rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
-.form-msg{font-size:.75rem;letter-spacing:.04em;margin-left:.5rem}
+.img-drop{border:1px dashed rgba(196,137,90,.25);background:var(--bg-lift);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
+.img-drop:hover{border-color:var(--copper-dk)}
+.img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-drop-icon{font-size:1.6rem;display:block;margin-bottom:.4rem}
+.img-drop-text{font-size:.75rem;color:var(--muted)}
+.img-drop-text strong{color:var(--copper-lt);font-weight:400}
+.img-preview-row{display:flex;align-items:center;gap:1rem;margin-top:.8rem}
+.img-preview{width:80px;height:80px;object-fit:cover;border:1px solid var(--border);display:none}
+.img-status{font-size:.7rem;color:var(--muted)}
+.form-actions{display:flex;gap:.8rem;margin-top:1.5rem;align-items:center;flex-wrap:wrap}
+.btn-submit{padding:.85rem 2.2rem;background:var(--copper);color:var(--bg);font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none;font-weight:500}
+.btn-submit:hover:not(:disabled){background:var(--copper-lt)}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.btn-cancel{padding:.85rem 1.4rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:none}
+.btn-cancel:hover{border-color:var(--red);color:var(--red)}
+.btn-clear{padding:.85rem 1.2rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.form-msg{font-size:.78rem;margin-left:.2rem}
 .form-msg.ok{color:var(--green)}.form-msg.err{color:var(--red)}
 
-/* SCHEDULE */
-.schedule-note{font-size:.72rem;color:var(--muted);margin-top:.4rem;line-height:1.5}
-.sched-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border:1px solid rgba(90,143,196,.3);color:var(--blue);background:rgba(90,143,196,.08)}
-
 /* TABLE */
+.table-toolbar{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;flex-wrap:wrap}
+.search-input{background:var(--bg-lift);border:1px solid var(--border);color:var(--cream);padding:.55rem .9rem;font-family:'Jost',sans-serif;font-size:.8rem;outline:none;transition:border-color .2s;width:220px}
+.search-input:focus{border-color:var(--copper-dk)}
+.search-input::placeholder{color:var(--muted)}
+.table-count{font-size:.72rem;color:var(--muted);margin-left:auto}
 .table-wrap{overflow-x:auto;margin-bottom:3rem}
-.admin-table{width:100%;border-collapse:collapse;min-width:800px}
+.admin-table{width:100%;border-collapse:collapse;min-width:820px}
 .admin-table th{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:.65rem .9rem;text-align:left;border-bottom:1px solid var(--border);background:var(--bg-lift);font-weight:400;white-space:nowrap}
-.admin-table td{padding:.75rem .9rem;border-bottom:1px solid rgba(196,137,90,0.07);vertical-align:middle;font-size:.82rem}
-.admin-table tr:last-child td{border-bottom:none}
-.admin-table tr:hover td{background:rgba(196,137,90,0.03)}
-.prod-thumb{width:40px;height:40px;object-fit:cover;border:1px solid var(--border);display:block}
-.prod-thumb-ph{width:40px;height:40px;background:var(--bg-lift);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.prod-name{color:var(--cream);font-weight:400}
-.prod-cat{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.15rem}
-.badge{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid}
+.admin-table td{padding:.8rem .9rem;border-bottom:1px solid rgba(196,137,90,0.07);vertical-align:middle;font-size:.82rem}
+.admin-table tbody tr:hover td{background:rgba(196,137,90,.03)}
+.prod-thumb{width:44px;height:44px;object-fit:cover;border:1px solid var(--border);display:block;border-radius:2px}
+.prod-thumb-ph{width:44px;height:44px;background:var(--bg-lift);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;border-radius:2px}
+.prod-name{color:var(--cream);font-weight:400;line-height:1.3}
+.prod-sub{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.15rem}
+.badge{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .5rem;border:1px solid}
 .badge.best{color:#c4a55a;border-color:rgba(196,165,90,.3);background:rgba(196,165,90,.08)}
 .badge.new{color:#5ab4c4;border-color:rgba(90,180,196,.3);background:rgba(90,180,196,.08)}
 .badge.pick{color:var(--copper-lt);border-color:var(--border);background:var(--copper-glow)}
-.badge.none{color:var(--muted);border-color:var(--border)}
-.feat-dot{width:8px;height:8px;border-radius:50%;display:inline-block;vertical-align:middle}
-.feat-dot.yes{background:var(--green)}.feat-dot.no{background:var(--muted)}
-.sched-cell{font-size:.68rem;color:var(--blue)}
-.sched-cell.past{color:var(--red)}
+.badge.none{color:var(--muted);border-color:rgba(196,137,90,.08)}
+.feat-pill{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid}
+.feat-pill.yes{color:var(--green);border-color:rgba(90,196,122,.3);background:rgba(90,196,122,.08)}
+.feat-pill.no{color:var(--muted);border-color:var(--border)}
+.sched-cell{font-size:.72rem;line-height:1.4}
+.sched-cell.pending{color:var(--blue)}
+.sched-cell.live{color:var(--green)}
 .sched-cell.none{color:var(--muted)}
-.table-actions{display:flex;gap:.3rem;align-items:center}
-.btn-edit-row{background:none;border:1px solid var(--border);cursor:pointer;color:var(--muted);transition:all .2s;padding:.3rem .6rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Jost',sans-serif}
-.btn-edit-row:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
-.btn-del{background:none;border:none;cursor:pointer;color:var(--muted);transition:color .2s;padding:.3rem .5rem}
-.btn-del:hover{color:var(--red)}
-.btn-del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;display:block}
-.empty-row td{text-align:center;padding:3rem;color:var(--muted);font-size:.8rem}
+.row-actions{display:flex;gap:.4rem;align-items:center}
+.btn-edit-row{background:none;border:1px solid var(--border);cursor:pointer;color:var(--muted);transition:all .2s;padding:.35rem .7rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Jost',sans-serif;white-space:nowrap}
+.btn-edit-row:hover{border-color:var(--copper-dk);color:var(--copper-lt);background:var(--copper-glow)}
+.btn-del{background:none;border:1px solid transparent;cursor:pointer;color:var(--muted);transition:all .2s;padding:.35rem .5rem;border-radius:2px}
+.btn-del:hover{color:var(--red);border-color:rgba(196,90,90,.25);background:rgba(196,90,90,.05)}
+.btn-del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;display:block}
+.empty-row td{text-align:center;padding:4rem 2rem;color:var(--muted);font-size:.85rem;line-height:2}
 
 /* SPINNER */
-.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--copper);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:.4rem}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--copper);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:.4rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* TOAST */
-#toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg-lift);border:1px solid var(--border);padding:.8rem 1.3rem;font-size:.78rem;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:320px}
+#toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg-lift);border:1px solid var(--border);padding:.9rem 1.4rem;font-size:.78rem;z-index:9999;opacity:0;transform:translateY(12px);transition:all .3s;pointer-events:none;max-width:340px;line-height:1.5}
 #toast.show{opacity:1;transform:translateY(0)}
 #toast.ok{border-color:rgba(90,196,122,.35);color:var(--green)}
-#toast.err{border-color:rgba(196,90,90,.35);color:var(--red)}
+#toast.err{border-color:rgba(196,90,90,.35);color:#e89090}
 #toast.info{border-color:rgba(90,143,196,.35);color:var(--blue)}
-
-/* APPS SCRIPT HELP BOX */
-.help-box{background:rgba(90,143,196,.06);border:1px solid rgba(90,143,196,.2);padding:1.2rem 1.5rem;margin-bottom:2rem;font-size:.8rem;line-height:1.8;color:var(--cream-dk)}
-.help-box strong{color:var(--copper-lt);font-weight:400;display:block;margin-bottom:.4rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase}
-.help-box code{background:var(--bg-lift);border:1px solid var(--border);padding:.1rem .4rem;font-size:.75rem;color:var(--copper);font-family:monospace;word-break:break-all}
 
 @media(max-width:640px){
   .admin-wrap{padding:1.5rem 1rem}
   .form-grid{grid-template-columns:1fr}
   .admin-nav{padding:0 1rem;gap:1rem}
   .stats-row{grid-template-columns:repeat(2,1fr)}
+  .search-input{width:100%}
 }
 </style>
 </head>
 <body>
 
-<!-- LOCK -->
+<!-- ══ LOCK ══ -->
 <div id="lockScreen">
   <div class="lock-card">
     <img src="https://i.ibb.co/PvMxjqz4/205abd4618296959713fbb9661c516e1.jpg" alt="VP" class="lock-logo">
     <h1 class="lock-title">Velvet <em>Pantry</em></h1>
     <p class="lock-sub">Admin Portal</p>
-    <input type="password" id="pwInput" class="lock-input" placeholder="Enter admin password">
+    <input type="password" id="pwInput" class="lock-input" placeholder="Password daalo">
     <button class="btn-copper" onclick="checkPassword()">Enter Portal</button>
-    <p class="lock-err" id="lockErr">Incorrect password. Please try again.</p>
+    <p class="lock-err" id="lockErr">❌ Wrong password</p>
   </div>
 </div>
 
-<!-- SHELL -->
+<!-- ══ ADMIN SHELL ══ -->
 <div id="adminShell">
   <nav class="admin-nav">
     <img src="https://i.ibb.co/PvMxjqz4/205abd4618296959713fbb9661c516e1.jpg" alt="VP" class="admin-logo">
@@ -196,53 +207,59 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
       <div class="stat-card"><span class="stat-num" id="statTotal">—</span><span class="stat-lbl">Total Products</span></div>
       <div class="stat-card"><span class="stat-num" id="statFeatured">—</span><span class="stat-lbl">Featured</span></div>
       <div class="stat-card"><span class="stat-num" id="statScheduled">—</span><span class="stat-lbl">Scheduled</span></div>
-      <div class="stat-card"><span class="stat-num" id="statBadged">—</span><span class="stat-lbl">Badged</span></div>
+      <div class="stat-card"><span class="stat-num" id="statLive">—</span><span class="stat-lbl">Live Now</span></div>
     </div>
 
     <!-- CONFIG -->
-    <div class="section-head"><h2>Script <em>Config</em></h2><span>Connect your Google Sheet</span></div>
+    <div class="section-head">
+      <h2>Script <em>Config</em></h2>
+      <button class="btn-sm primary" onclick="copyScriptCode()">📋 Apps Script Code Copy Karo</button>
+    </div>
 
-    <div class="help-box">
-      <strong>⚠ Apps Script Setup — Zaroori</strong>
-      Tumhara Apps Script in 3 actions support kare: <code>add</code>, <code>edit</code>, <code>delete</code>.<br>
-      POST body mein <code>action</code> field hogi. GET request pe CSV return kare.<br>
-      Neeche Google Apps Script code copy karo aur apne Script mein paste karo:
-      <br><br>
-      <button class="btn-sm" onclick="showScriptCode()" style="margin-top:.3rem">📋 Apps Script Code Copy Karo</button>
+    <div class="alert-box info" id="setupAlert">
+      <span class="alert-icon">ℹ️</span>
+      <div>
+        <strong style="color:var(--copper-lt);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.3rem">Setup Steps</strong>
+        1. Upar button se Apps Script code copy karo<br>
+        2. Google Sheet → Extensions → Apps Script → purana code hata ke paste karo<br>
+        3. Sheet ka Row 1 hona chahiye: <code>name, category, description, link, badge, featured, image_url, scheduled_date</code><br>
+        4. Deploy → New Deployment → Web App → Anyone → Deploy → URL copy karo<br>
+        5. Neeche URL paste karo → Save & Load
+      </div>
     </div>
 
     <div class="config-bar">
       <span class="config-label">Apps Script URL</span>
-      <input type="text" class="config-input" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/...">
-      <button class="btn-sm" onclick="saveScriptUrl()">Save & Load</button>
-      <span class="config-status" id="configStatus"></span>
+      <input type="text" class="config-input" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+      <button class="btn-sm primary" onclick="saveAndLoad()">Save & Load</button>
+      <span id="urlStatus"></span>
     </div>
-    <div class="config-bar">
+    <div class="config-bar" style="margin-top:-0.5rem;margin-bottom:2rem">
       <span class="config-label">ImgBB API Key</span>
-      <input type="password" class="config-input" id="imgbbKeyInput" placeholder="ImgBB API key (imgbb.com/api se milega)">
+      <input type="password" class="config-input" id="imgbbKeyInput" placeholder="imgbb.com/api se milega">
       <button class="btn-sm" onclick="saveImgbbKey()">Save Key</button>
-      <span class="config-status" id="imgbbStatus"></span>
+      <span id="imgbbStatus" class="config-ok"></span>
     </div>
 
     <!-- ADD / EDIT FORM -->
     <div class="section-head" style="margin-top:2rem">
       <h2 id="formTitle">Add <em>Product</em></h2>
-      <span id="formSubtitle">Naya product add karo</span>
+      <span id="formSub" style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Naya product add karo</span>
     </div>
 
     <div class="add-form">
-      <div class="form-mode-bar" id="formModeBar" style="display:none">
-        <span class="form-mode-label">Editing:</span>
-        <span class="form-mode-name" id="formModeName"></span>
+      <div class="edit-banner" id="editBanner">
+        <span class="edit-banner-label">✏ Editing:</span>
+        <span class="edit-banner-name" id="editBannerName"></span>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
-          <label class="form-label">Product Name *</label>
+          <label class="form-label">Product Name <small>*required</small></label>
           <input type="text" class="form-input" id="fName" placeholder="e.g. Cast Iron Skillet">
         </div>
         <div class="form-group">
-          <label class="form-label">Category *</label>
+          <label class="form-label">Category <small>*required</small></label>
           <select class="form-select" id="fCat">
             <option value="">— Select —</option>
             <option value="Cookware">🍳 Cookware</option>
@@ -255,10 +272,10 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
         </div>
         <div class="form-group full">
           <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="fDesc" placeholder="Product card pe dikhne wala short description..."></textarea>
+          <textarea class="form-textarea" id="fDesc" placeholder="Product card pe dikhne wali short description..."></textarea>
         </div>
         <div class="form-group full">
-          <label class="form-label">Affiliate Link *</label>
+          <label class="form-label">Affiliate Link <small>*required</small></label>
           <input type="url" class="form-input" id="fLink" placeholder="https://...">
         </div>
         <div class="form-group">
@@ -273,36 +290,36 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
         <div class="form-group">
           <label class="form-label">Featured on Homepage</label>
           <div class="toggle-wrap">
-            <label class="toggle"><input type="checkbox" id="fFeatured"><span class="toggle-slider"></span></label>
-            <span class="toggle-lbl">Show in Editor's Picks</span>
+            <label class="toggle">
+              <input type="checkbox" id="fFeatured">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-lbl">Editor's Picks mein dikhao</span>
           </div>
         </div>
-
-        <!-- SCHEDULE -->
         <div class="form-group full">
-          <label class="form-label">📅 Schedule — Publish Date (Optional)</label>
+          <label class="form-label">📅 Schedule <small>— khali rakho agar abhi publish karna hai</small></label>
           <input type="datetime-local" class="form-input" id="fSchedule">
-          <p class="schedule-note">Agar date set karoge toh product website pe tab dikhega jab yeh date aa jaayegi. Khali chhodo agar abhi publish karna hai.</p>
         </div>
-
-        <!-- IMAGE -->
         <div class="form-group full">
           <label class="form-label">Product Image</label>
-          <div class="img-upload-area">
-            <input type="file" id="fImage" accept="image/*" onchange="handleImageSelect(this)">
-            <span class="img-upload-icon">📷</span>
-            <p class="img-upload-text"><strong>Click to upload</strong> or drag & drop</p>
-            <p class="img-upload-text" style="margin-top:.2rem;font-size:.68rem">PNG, JPG, WEBP — max 32MB</p>
+          <div class="img-drop">
+            <input type="file" id="fImage" accept="image/*" onchange="handleImg(this)">
+            <span class="img-drop-icon">📷</span>
+            <p class="img-drop-text"><strong>Click to upload</strong> ya drag & drop karo</p>
+            <p class="img-drop-text" style="margin-top:.3rem;font-size:.68rem">PNG, JPG, WEBP — max 32MB</p>
           </div>
-          <img id="imgPreview" class="img-preview" alt="Preview">
-          <p class="img-status" id="imgStatus"></p>
+          <div class="img-preview-row">
+            <img id="imgPreview" class="img-preview" alt="">
+            <span class="img-status" id="imgStatus"></span>
+          </div>
         </div>
       </div>
 
       <div class="form-actions">
-        <button class="btn-add" id="btnSubmit" onclick="submitForm()">Add to Sheet</button>
-        <button class="btn-cancel-edit" id="btnCancelEdit" onclick="cancelEdit()">✕ Cancel Edit</button>
-        <button class="btn-reset" onclick="resetForm()">Clear</button>
+        <button class="btn-submit" id="btnSubmit" onclick="submitForm()">➕ Add to Sheet</button>
+        <button class="btn-cancel" id="btnCancel" onclick="cancelEdit()">✕ Cancel</button>
+        <button class="btn-clear" onclick="resetForm()">Clear</button>
         <span class="form-msg" id="formMsg"></span>
       </div>
     </div>
@@ -310,7 +327,15 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
     <!-- PRODUCT TABLE -->
     <div class="section-head">
       <h2>All <em>Products</em></h2>
-      <span id="tableStatus"><span class="spinner"></span> Loading…</span>
+      <div class="section-head-right">
+        <button class="btn-sm" onclick="loadProducts()">↺ Refresh</button>
+        <span id="tableStatus" style="font-size:.65rem;color:var(--muted)"><span class="spinner"></span> Loading…</span>
+      </div>
+    </div>
+
+    <div class="table-toolbar">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 Product naam search karo…" oninput="filterTable()">
+      <span class="table-count" id="tableCount"></span>
     </div>
 
     <div class="table-wrap">
@@ -322,12 +347,12 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
             <th>Category</th>
             <th>Badge</th>
             <th>Featured</th>
-            <th>Scheduled</th>
+            <th>Schedule / Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody id="productTableBody">
-          <tr class="empty-row"><td colspan="7"><span class="spinner"></span> Loading…</td></tr>
+          <tr class="empty-row"><td colspan="7"><span class="spinner"></span> Products load ho rahe hain…</td></tr>
         </tbody>
       </table>
     </div>
@@ -338,166 +363,189 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
-// CONFIG — APNA PASSWORD YAHAN BADLO
-// ══════════════════════════════════════
+// ════════════════════════════════════════
+// CONFIG — apna password badlo
+// ════════════════════════════════════════
 const ADMIN_PASSWORD = 'velvetpantry2024';
 
-let SCRIPT_URL = localStorage.getItem('vp_script_url') || 'https://script.google.com/macros/s/AKfycbx2m3ApL_244Ks5aZj2rApux9pntv3rjDQ5ipDssBai0UmB_6sQnd2afSVeRy7HMqxI/exec';
-let IMGBB_KEY  = localStorage.getItem('vp_imgbb_key') || '';
-let allProducts = [];
-let editingRow = null; // null = add mode, number = edit mode (sheet row)
+let SCRIPT_URL = localStorage.getItem('vp_script_url') || '';
+let IMGBB_KEY  = localStorage.getItem('vp_imgbb_key')  || '';
+let allProducts   = [];
+let filteredProds = [];
+let editingRow    = null; // null=add, number=sheet row
 
 const CAT_ICONS = {Cookware:'🍳',Knives:'🔪',Bakeware:'🥐',Storage:'🫙',Appliances:'⚡',Tools:'✨'};
 
-// ── LOCK ──────────────────────────────
+// ── LOCK ──────────────────────────────────────────────────
 function checkPassword(){
   const v = document.getElementById('pwInput').value;
   if(v === ADMIN_PASSWORD){
-    document.getElementById('lockScreen').style.display='none';
-    document.getElementById('adminShell').style.display='block';
-    loadConfig(); loadProducts();
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('adminShell').style.display = 'block';
+    initAdmin();
   } else {
     const e = document.getElementById('lockErr');
-    e.style.display='block';
-    document.getElementById('pwInput').value='';
-    setTimeout(()=>e.style.display='none',3000);
+    e.style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    setTimeout(()=> e.style.display='none', 3000);
   }
 }
-document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword()});
+document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+
 function logout(){
-  document.getElementById('adminShell').style.display='none';
-  document.getElementById('lockScreen').style.display='flex';
-  document.getElementById('pwInput').value='';
+  document.getElementById('adminShell').style.display = 'none';
+  document.getElementById('lockScreen').style.display  = 'flex';
+  document.getElementById('pwInput').value = '';
 }
 
-// ── CONFIG ────────────────────────────
-function loadConfig(){
+function initAdmin(){
   document.getElementById('scriptUrlInput').value = SCRIPT_URL;
-  document.getElementById('imgbbKeyInput').value = IMGBB_KEY;
+  document.getElementById('imgbbKeyInput').value  = IMGBB_KEY;
+  if(SCRIPT_URL) loadProducts();
+  else setUrlStatus('⚠ Pehle Apps Script URL save karo', 'err');
 }
-function saveScriptUrl(){
+
+// ── CONFIG ────────────────────────────────────────────────
+function saveAndLoad(){
   const v = document.getElementById('scriptUrlInput').value.trim();
-  if(!v){showToast('Valid URL daalo','err');return;}
-  SCRIPT_URL=v; localStorage.setItem('vp_script_url',v);
-  document.getElementById('configStatus').textContent='✓ Saved';
-  setTimeout(()=>document.getElementById('configStatus').textContent='',2000);
+  if(!v){ setUrlStatus('Valid URL daalo','err'); return; }
+  SCRIPT_URL = v;
+  localStorage.setItem('vp_script_url', v);
+  setUrlStatus('✓ Saved — loading…','ok');
   loadProducts();
 }
+
 function saveImgbbKey(){
   const v = document.getElementById('imgbbKeyInput').value.trim();
-  IMGBB_KEY=v; localStorage.setItem('vp_imgbb_key',v);
-  document.getElementById('imgbbStatus').textContent='✓ Saved';
-  setTimeout(()=>document.getElementById('imgbbStatus').textContent='',2000);
+  IMGBB_KEY = v;
+  localStorage.setItem('vp_imgbb_key', v);
+  document.getElementById('imgbbStatus').textContent = '✓ Saved';
+  setTimeout(()=> document.getElementById('imgbbStatus').textContent='', 2500);
 }
 
-// ── APPS SCRIPT CODE ─────────────────
-function showScriptCode(){
+function setUrlStatus(msg, type){
+  const el = document.getElementById('urlStatus');
+  el.textContent = msg;
+  el.className = type === 'ok' ? 'config-ok' : 'config-err';
+  if(type==='ok') setTimeout(()=>{ el.textContent=''; }, 3000);
+}
+
+// ── APPS SCRIPT CODE ──────────────────────────────────────
+function copyScriptCode(){
   const code = `// Velvet Pantry — Google Apps Script
-// Sheet columns: name, category, description, link, badge, featured, image_url, scheduled_date
+// Sheet Row 1 must be: name,category,description,link,badge,featured,image_url,scheduled_date
 
 function doGet(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = sheet.getDataRange().getValues();
-  const headers = data[0];
-  let csv = headers.join(',') + '\\n';
-  for(let i=1;i<data.length;i++){
-    csv += data[i].map(c=>{
-      const s = String(c||'').replace(/"/g,'""');
-      return s.includes(',') || s.includes('"') || s.includes('\\n') ? '"'+s+'"' : s;
+  if(data.length === 0) return ContentService.createTextOutput('name,category,description,link,badge,featured,image_url,scheduled_date').setMimeType(ContentService.MimeType.TEXT);
+  let csv = data[0].join(',') + '\\n';
+  for(let i = 1; i < data.length; i++){
+    csv += data[i].map(c => {
+      const s = String(c===null||c===undefined?'':c).replace(/"/g,'""');
+      return (s.includes(',')||s.includes('"')||s.includes('\\n')) ? '"'+s+'"' : s;
     }).join(',') + '\\n';
   }
   return ContentService.createTextOutput(csv).setMimeType(ContentService.MimeType.TEXT);
 }
 
 function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const body = JSON.parse(e.postData.contents);
-  const action = body.action;
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const body = JSON.parse(e.postData.contents);
+    if(body.action === 'add'){
+      sheet.appendRow([body.name||'',body.category||'',body.description||'',body.link||'',body.badge||'',body.featured||'no',body.image_url||'',body.scheduled_date||'']);
+      return ok('Product add ho gaya');
+    }
+    if(body.action === 'edit'){
+      const r = Number(body.row);
+      if(!r||r<2) return err('Invalid row');
+      sheet.getRange(r,1,1,8).setValues([[body.name||'',body.category||'',body.description||'',body.link||'',body.badge||'',body.featured||'no',body.image_url||'',body.scheduled_date||'']]);
+      return ok('Product update ho gaya');
+    }
+    if(body.action === 'delete'){
+      const r = Number(body.row);
+      if(!r||r<2) return err('Invalid row');
+      sheet.deleteRow(r);
+      return ok('Product delete ho gaya');
+    }
+    return err('Unknown action');
+  } catch(ex) { return err(ex.message); }
+}
+function ok(m){ return ContentService.createTextOutput(JSON.stringify({status:'success',message:m})).setMimeType(ContentService.MimeType.JSON); }
+function err(m){ return ContentService.createTextOutput(JSON.stringify({status:'error',message:m})).setMimeType(ContentService.MimeType.JSON); }`;
 
-  if(action === 'add'){
-    sheet.appendRow([
-      body.name||'', body.category||'', body.description||'',
-      body.link||'', body.badge||'', body.featured||'no',
-      body.image_url||'', body.scheduled_date||''
-    ]);
-    return res('success','Product added');
-  }
-
-  if(action === 'edit'){
-    const row = Number(body.row);
-    if(!row || row<2) return res('error','Invalid row');
-    sheet.getRange(row,1,1,8).setValues([[
-      body.name||'', body.category||'', body.description||'',
-      body.link||'', body.badge||'', body.featured||'no',
-      body.image_url||'', body.scheduled_date||''
-    ]]);
-    return res('success','Product updated');
-  }
-
-  if(action === 'delete'){
-    const row = Number(body.row);
-    if(!row || row<2) return res('error','Invalid row');
-    sheet.deleteRow(row);
-    return res('success','Product deleted');
-  }
-
-  return res('error','Unknown action');
+  navigator.clipboard.writeText(code)
+    .then(()=> showToast('Apps Script code copy ho gaya! 📋\nGoogle Sheet → Extensions → Apps Script → paste karo','info'))
+    .catch(()=> showToast('Copy nahi hua — manually copy karo', 'err'));
 }
 
-function res(status, message){
-  return ContentService
-    .createTextOutput(JSON.stringify({status, message}))
-    .setMimeType(ContentService.MimeType.JSON);
-}`;
-
-  navigator.clipboard.writeText(code).then(()=>{
-    showToast('Apps Script code clipboard mein copy ho gaya! 📋','info');
-  }).catch(()=>{
-    const w = window.open('','_blank','width=700,height=600');
-    w.document.write('<pre style="background:#1a1a1a;color:#ddb07e;padding:1rem;font-size:12px;white-space:pre-wrap">'+code+'</pre>');
-    w.document.title='Apps Script Code';
-  });
-}
-
-// ── IMAGE UPLOAD ─────────────────────
-function handleImageSelect(input){
+// ── IMAGE ─────────────────────────────────────────────────
+function handleImg(input){
   const file = input.files[0]; if(!file) return;
   const r = new FileReader();
-  r.onload = e=>{
+  r.onload = e => {
     const p = document.getElementById('imgPreview');
-    p.src=e.target.result; p.style.display='block';
+    p.src = e.target.result; p.style.display = 'block';
   };
   r.readAsDataURL(file);
-  document.getElementById('imgStatus').textContent='📂 Image selected';
+  document.getElementById('imgStatus').textContent = '📂 Image ready';
 }
 
-async function uploadToImgBB(file){
-  if(!IMGBB_KEY){showToast('ImgBB API key save karo pehle!','err');throw new Error('No key');}
-  const fd = new FormData(); fd.append('image',file);
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`,{method:'POST',body:fd});
+async function uploadImgBB(file){
+  if(!IMGBB_KEY) throw new Error('ImgBB key nahi hai — config mein save karo');
+  const fd = new FormData(); fd.append('image', file);
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {method:'POST', body:fd});
   const d = await res.json();
-  if(!d.success) throw new Error(d.error?.message||'ImgBB upload failed');
+  if(!d.success) throw new Error(d.error?.message || 'ImgBB upload failed');
   return d.data.url;
 }
 
-// ── LOAD PRODUCTS ─────────────────────
+// ── LOAD PRODUCTS ─────────────────────────────────────────
+// KEY FIX: Google Apps Script CORS issue
+// Solution: URL mein ?callback use karke JSONP nahi — 
+// direct fetch with redirect follow karta hai
 async function loadProducts(){
-  document.getElementById('tableStatus').innerHTML='<span class="spinner"></span> Loading…';
-  try{
-    const res = await fetch(SCRIPT_URL+'?t='+Date.now());
-    if(!res.ok) throw new Error('HTTP '+res.status);
+  if(!SCRIPT_URL){ setUrlStatus('Apps Script URL save karo pehle','err'); return; }
+  document.getElementById('tableStatus').innerHTML = '<span class="spinner"></span> Loading…';
+  document.getElementById('productTableBody').innerHTML = '<tr class="empty-row"><td colspan="7"><span class="spinner"></span> Products load ho rahe hain…</td></tr>';
+
+  try {
+    // Google Apps Script doGet — simple GET, text/csv return karta hai
+    const res = await fetch(SCRIPT_URL, {
+      method: 'GET',
+      redirect: 'follow'  // ← Apps Script redirect follow karna zaroori hai
+    });
+
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const txt = await res.text();
+
+    if(!txt || txt.trim().length === 0) throw new Error('Sheet empty hai ya URL galat hai');
+
     allProducts = parseCSV(txt);
-    renderTable(); updateStats();
-    document.getElementById('tableStatus').textContent = allProducts.length+' products loaded';
-  }catch(e){
-    document.getElementById('tableStatus').textContent = '⚠ Load failed — Script URL check karo';
-    document.getElementById('productTableBody').innerHTML='<tr class="empty-row"><td colspan="7">⚠ Google Sheet se connect nahi ho paya.<br>Upar config mein Apps Script URL check karo.</td></tr>';
+    filteredProds = [...allProducts];
+    renderTable(filteredProds);
+    updateStats();
+    setUrlStatus('✓ '+allProducts.length+' products loaded','ok');
+    document.getElementById('tableStatus').textContent = allProducts.length + ' products';
+
+  } catch(err){
+    console.error(err);
+    document.getElementById('tableStatus').textContent = '⚠ Load failed';
+    document.getElementById('productTableBody').innerHTML = `
+      <tr class="empty-row"><td colspan="7">
+        <strong style="color:var(--red)">⚠ Products load nahi hue</strong><br><br>
+        Possible reasons:<br>
+        1. Apps Script URL galat hai<br>
+        2. Deployment "Anyone" pe set nahi ki<br>
+        3. Naya deploy karne ke baad purana URL use kar rahe ho<br><br>
+        <em style="font-size:.75rem;color:var(--muted)">Error: ${err.message}</em>
+      </td></tr>`;
+    setUrlStatus('⚠ Load failed — URL check karo', 'err');
   }
 }
 
-// ── SUBMIT (ADD or EDIT) ──────────────
+// ── SUBMIT (ADD / EDIT) ───────────────────────────────────
 async function submitForm(){
   const name  = document.getElementById('fName').value.trim();
   const cat   = document.getElementById('fCat').value;
@@ -505,228 +553,283 @@ async function submitForm(){
   const link  = document.getElementById('fLink').value.trim();
   const badge = document.getElementById('fBadge').value;
   const feat  = document.getElementById('fFeatured').checked ? 'yes' : 'no';
-  const schedVal = document.getElementById('fSchedule').value;
+  const sched = document.getElementById('fSchedule').value;
   const imgFile = document.getElementById('fImage').files[0];
 
-  if(!name||!cat||!link){setMsg('Name, Category aur Link required hain','err');return;}
+  if(!name || !cat || !link){ setMsg('Name, Category aur Link required hain ⚠','err'); return; }
+  if(!SCRIPT_URL){ setMsg('Apps Script URL set karo pehle','err'); return; }
 
   const btn = document.getElementById('btnSubmit');
-  btn.disabled=true;
-  btn.textContent = editingRow ? 'Saving…' : 'Adding…';
+  btn.disabled = true;
+  btn.textContent = '⏳ Please wait…';
   setMsg('','');
 
-  try{
-    // Get current image_url if editing (keep old if no new image)
+  try {
+    // Existing image URL (for edit mode — keep old if no new image)
     let imageUrl = '';
     if(editingRow !== null){
-      const existing = allProducts.find((_,i)=>i+2===editingRow);
-      if(existing) imageUrl = existing.image_url||'';
+      const existing = allProducts[editingRow - 2];
+      if(existing) imageUrl = existing.image_url || '';
     }
 
+    // Upload new image if selected
     if(imgFile){
-      document.getElementById('imgStatus').textContent='☁ Uploading to ImgBB…';
-      imageUrl = await uploadToImgBB(imgFile);
-      document.getElementById('imgStatus').textContent='✓ Image uploaded';
+      document.getElementById('imgStatus').textContent = '☁ ImgBB pe upload ho raha hai…';
+      imageUrl = await uploadImgBB(imgFile);
+      document.getElementById('imgStatus').textContent = '✓ Upload complete';
     }
 
     const payload = {
-      name, category:cat, description:desc, link,
-      badge, featured:feat, image_url:imageUrl,
-      scheduled_date: schedVal || ''
+      action: editingRow !== null ? 'edit' : 'add',
+      name, category: cat, description: desc,
+      link, badge, featured: feat,
+      image_url: imageUrl,
+      scheduled_date: sched
     };
+    if(editingRow !== null) payload.row = editingRow;
 
-    if(editingRow !== null){
-      payload.action = 'edit';
-      payload.row = editingRow;
-    } else {
-      payload.action = 'add';
-    }
-
-    const res = await fetch(SCRIPT_URL,{
-      method:'POST',
-      mode:'no-cors', // Google Apps Script ke liye zaroori
-      body:JSON.stringify(payload)
+    // ── KEY FIX: no-cors POST ──
+    // Google Apps Script POST ke liye mode:'no-cors' zaroori hai
+    // Response nahi milti — isliye 2 seconds baad reload karte hain
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
     });
 
     // no-cors mein response read nahi hoti — success assume karo
-    showToast(editingRow ? `"${name}" update ho gaya! ✓` : `"${name}" add ho gaya! ✓`,'ok');
+    const action = editingRow !== null ? 'update' : 'add';
+    showToast(`✓ "${name}" ${action === 'add' ? 'add' : 'update'} ho gaya!\nSheet pe check karo.`, 'ok');
     resetForm();
     cancelEdit();
-    setTimeout(loadProducts, 1500); // reload after 1.5s
-  }catch(err){
-    setMsg('Error: '+err.message,'err');
-    showToast('Failed — '+err.message,'err');
-  }finally{
-    btn.disabled=false;
-    btn.textContent = editingRow ? 'Save Changes' : 'Add to Sheet';
+
+    // 2 seconds baad reload — sheet update hone ka time dete hain
+    setTimeout(loadProducts, 2000);
+
+  } catch(err){
+    setMsg('Error: ' + err.message, 'err');
+    showToast('❌ Failed: ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = editingRow !== null ? '💾 Save Changes' : '➕ Add to Sheet';
   }
 }
 
-// ── EDIT ──────────────────────────────
+// ── EDIT ──────────────────────────────────────────────────
 function startEdit(rowNum){
-  const p = allProducts[rowNum-2]; // rowNum is sheet row (starts at 2)
+  const p = allProducts[rowNum - 2];
   if(!p) return;
   editingRow = rowNum;
 
-  // Fill form
-  document.getElementById('fName').value = p.name||'';
-  document.getElementById('fCat').value = p.category||'';
-  document.getElementById('fDesc').value = p.description||'';
-  document.getElementById('fLink').value = p.link||'';
-  document.getElementById('fBadge').value = p.badge||'';
-  document.getElementById('fFeatured').checked = (p.featured==='yes'||p.featured==='true');
+  document.getElementById('fName').value  = p.name || '';
+  document.getElementById('fCat').value   = p.category || '';
+  document.getElementById('fDesc').value  = p.description || '';
+  document.getElementById('fLink').value  = p.link || '';
+  document.getElementById('fBadge').value = p.badge || '';
+  document.getElementById('fFeatured').checked = (p.featured === 'yes' || p.featured === 'true');
 
-  // Schedule
+  // Schedule datetime-local format
   if(p.scheduled_date){
     try{
       const d = new Date(p.scheduled_date);
-      const local = new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
-      document.getElementById('fSchedule').value = local;
-    }catch(e){ document.getElementById('fSchedule').value=''; }
+      const offset = d.getTimezoneOffset() * 60000;
+      document.getElementById('fSchedule').value = new Date(d - offset).toISOString().slice(0,16);
+    } catch(e){ document.getElementById('fSchedule').value = ''; }
   } else {
-    document.getElementById('fSchedule').value='';
+    document.getElementById('fSchedule').value = '';
   }
 
-  // Image preview
+  // Show existing image
   if((p.image_url||'').startsWith('http')){
     const prev = document.getElementById('imgPreview');
-    prev.src=p.image_url; prev.style.display='block';
-    document.getElementById('imgStatus').textContent='Current image — nayi upload karo to replace hogi';
+    prev.src = p.image_url; prev.style.display = 'block';
+    document.getElementById('imgStatus').textContent = 'Current image — nayi upload karo to replace hogi';
   }
 
-  // UI changes
-  document.getElementById('formTitle').innerHTML = 'Edit <em>Product</em>';
-  document.getElementById('formSubtitle').textContent = 'Changes save karo';
-  document.getElementById('formModeBar').style.display='flex';
-  document.getElementById('formModeName').textContent = p.name;
-  document.getElementById('btnSubmit').textContent = 'Save Changes';
-  document.getElementById('btnCancelEdit').style.display='block';
+  // UI
+  document.getElementById('formTitle').innerHTML  = 'Edit <em>Product</em>';
+  document.getElementById('formSub').textContent  = 'Changes karo aur Save karo';
+  document.getElementById('editBanner').style.display = 'flex';
+  document.getElementById('editBannerName').textContent = p.name;
+  document.getElementById('btnSubmit').textContent = '💾 Save Changes';
+  document.getElementById('btnCancel').style.display = 'block';
 
-  // Scroll to form
-  document.querySelector('.add-form').scrollIntoView({behavior:'smooth',block:'start'});
-  showToast('"'+p.name+'" edit mode mein — changes karo aur Save karo','info');
+  document.querySelector('.add-form').scrollIntoView({behavior:'smooth', block:'start'});
+  showToast(`✏ "${p.name}" edit mode mein`, 'info');
 }
 
 function cancelEdit(){
   editingRow = null;
-  document.getElementById('formTitle').innerHTML = 'Add <em>Product</em>';
-  document.getElementById('formSubtitle').textContent = 'Naya product add karo';
-  document.getElementById('formModeBar').style.display='none';
-  document.getElementById('btnSubmit').textContent = 'Add to Sheet';
-  document.getElementById('btnCancelEdit').style.display='none';
+  document.getElementById('formTitle').innerHTML  = 'Add <em>Product</em>';
+  document.getElementById('formSub').textContent  = 'Naya product add karo';
+  document.getElementById('editBanner').style.display = 'none';
+  document.getElementById('btnSubmit').textContent = '➕ Add to Sheet';
+  document.getElementById('btnCancel').style.display = 'none';
   resetForm();
 }
 
-// ── DELETE ────────────────────────────
+// ── DELETE ────────────────────────────────────────────────
 async function deleteProduct(rowNum, name){
-  if(!confirm(`"${name}" delete karna chahte ho? Yeh undo nahi ho sakta.`)) return;
-  try{
-    await fetch(SCRIPT_URL,{
-      method:'POST',
-      mode:'no-cors',
-      body:JSON.stringify({action:'delete',row:rowNum})
+  if(!confirm(`"${name}" delete karna chahte ho?\nYeh undo nahi hoga!`)) return;
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'delete', row: rowNum })
     });
-    showToast(`"${name}" delete ho gaya`,'ok');
-    setTimeout(loadProducts,1500);
-  }catch(e){
-    showToast('Delete failed: '+e.message,'err');
+    showToast(`🗑 "${name}" delete ho gaya`, 'ok');
+    setTimeout(loadProducts, 2000);
+  } catch(e){
+    showToast('Delete failed: ' + e.message, 'err');
   }
 }
 
-// ── RENDER TABLE ──────────────────────
-function renderTable(){
+// ── SEARCH / FILTER ───────────────────────────────────────
+function filterTable(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  filteredProds = q
+    ? allProducts.filter(p => (p.name||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q))
+    : [...allProducts];
+  renderTable(filteredProds);
+}
+
+// ── RENDER TABLE ──────────────────────────────────────────
+function renderTable(list){
   const tbody = document.getElementById('productTableBody');
-  if(allProducts.length===0){
-    tbody.innerHTML='<tr class="empty-row"><td colspan="7">Koi product nahi. Upar se add karo!</td></tr>';
+  document.getElementById('tableCount').textContent = list.length + ' product' + (list.length!==1?'s':'');
+
+  if(list.length === 0){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Koi product nahi mila.<br><small>Upar form se add karo ya search clear karo.</small></td></tr>';
     return;
   }
+
   const now = new Date();
-  tbody.innerHTML = allProducts.map((p,i)=>{
-    const rowNum = i+2;
+  tbody.innerHTML = list.map(p => {
+    // Row number in ORIGINAL allProducts array
+    const origIdx = allProducts.findIndex(x => x === p);
+    const rowNum  = origIdx + 2; // sheet row
+
     const imgHtml = (p.image_url||'').startsWith('http')
-      ? `<img src="${p.image_url}" class="prod-thumb" alt="">`
+      ? `<img src="${p.image_url}" class="prod-thumb" alt="" onerror="this.style.display='none'">`
       : `<div class="prod-thumb-ph">${CAT_ICONS[p.category]||'🏠'}</div>`;
+
+    const badgeKey = (p.badge||'').toLowerCase();
+    const badgeClass = badgeKey.includes('best') ? 'best' : badgeKey.includes('new') ? 'new' : badgeKey ? 'pick' : 'none';
     const badgeHtml = p.badge
-      ? `<span class="badge ${p.badge.toLowerCase().includes('best')?'best':p.badge.toLowerCase().includes('new')?'new':'pick'}">${p.badge}</span>`
+      ? `<span class="badge ${badgeClass}">${p.badge}</span>`
       : `<span class="badge none">—</span>`;
-    const featHtml = (p.featured==='yes'||p.featured==='true')
-      ? `<span class="feat-dot yes" title="Featured"></span> <span style="font-size:.65rem;color:var(--green)">Yes</span>`
-      : `<span class="feat-dot no"></span>`;
-    let schedHtml = '<span class="sched-cell none">—</span>';
-    if(p.scheduled_date){
+
+    const featClass = (p.featured==='yes'||p.featured==='true') ? 'yes' : 'no';
+    const featHtml  = `<span class="feat-pill ${featClass}">${featClass==='yes'?'✓ Yes':'No'}</span>`;
+
+    let schedHtml = '<span class="sched-cell none">Abhi Live</span>';
+    if(p.scheduled_date && p.scheduled_date.trim()){
       const sd = new Date(p.scheduled_date);
-      const isPast = sd <= now;
-      const formatted = sd.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-      schedHtml = `<span class="sched-cell ${isPast?'past':''}" title="${isPast?'Published':'Pending'}">
-        ${isPast?'✓ Published':'⏳ '+ formatted}
-      </span>`;
+      if(!isNaN(sd)){
+        const isPast = sd <= now;
+        const fmt = sd.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})
+                  + '<br>' + sd.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+        schedHtml = `<span class="sched-cell ${isPast?'live':'pending'}">${isPast?'✓ Published':'⏳ '+fmt}</span>`;
+      }
     }
+
+    const safeName = p.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
     return `<tr>
       <td>${imgHtml}</td>
-      <td><div class="prod-name">${p.name}</div><div class="prod-cat">${p.category||'—'}</div></td>
+      <td>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-sub">${p.category||'—'}</div>
+      </td>
       <td>${p.category||'—'}</td>
       <td>${badgeHtml}</td>
       <td>${featHtml}</td>
       <td>${schedHtml}</td>
-      <td><div class="table-actions">
-        <button class="btn-edit-row" onclick="startEdit(${rowNum})">✏ Edit</button>
-        <button class="btn-del" onclick="deleteProduct(${rowNum},'${p.name.replace(/'/g,"\\'")}')">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        </button>
-      </div></td>
+      <td>
+        <div class="row-actions">
+          <button class="btn-edit-row" onclick="startEdit(${rowNum})">✏ Edit</button>
+          <button class="btn-del" onclick="deleteProduct(${rowNum},'${safeName}')" title="Delete">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </td>
     </tr>`;
   }).join('');
 }
 
-// ── STATS ─────────────────────────────
+// ── STATS ─────────────────────────────────────────────────
 function updateStats(){
   const now = new Date();
-  document.getElementById('statTotal').textContent = allProducts.length;
-  document.getElementById('statFeatured').textContent = allProducts.filter(p=>p.featured==='yes'||p.featured==='true').length;
-  document.getElementById('statScheduled').textContent = allProducts.filter(p=>p.scheduled_date && new Date(p.scheduled_date)>now).length;
-  document.getElementById('statBadged').textContent = allProducts.filter(p=>p.badge&&p.badge.length>0).length;
+  const total     = allProducts.length;
+  const featured  = allProducts.filter(p => p.featured==='yes'||p.featured==='true').length;
+  const scheduled = allProducts.filter(p => {
+    if(!p.scheduled_date||!p.scheduled_date.trim()) return false;
+    const d = new Date(p.scheduled_date); return !isNaN(d) && d > now;
+  }).length;
+  const live = total - scheduled;
+  document.getElementById('statTotal').textContent     = total;
+  document.getElementById('statFeatured').textContent  = featured;
+  document.getElementById('statScheduled').textContent = scheduled;
+  document.getElementById('statLive').textContent      = live;
 }
 
-// ── CSV PARSER ────────────────────────
+// ── CSV PARSER ────────────────────────────────────────────
 function parseCSV(txt){
   const lines = txt.trim().split('\n');
-  if(lines.length<2) return [];
-  const headers = splitLine(lines[0]).map(h=>h.toLowerCase().trim());
-  return lines.slice(1).map(l=>{
-    const v=splitLine(l); const o={};
-    headers.forEach((h,i)=>o[h]=(v[i]||'').trim());
-    return o;
-  }).filter(p=>p.name&&p.name.length>0);
-}
-function splitLine(l){
-  const r=[]; let c=''; let q=false;
-  for(let i=0;i<l.length;i++){
-    if(l[i]==='"'){q=!q;}
-    else if(l[i]===','&&!q){r.push(c);c='';}
-    else{c+=l[i];}
-  } r.push(c); return r;
+  if(lines.length < 2) return [];
+  const headers = splitCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g,''));
+  return lines.slice(1)
+    .map(l => {
+      const vals = splitCSVLine(l);
+      const obj  = {};
+      headers.forEach((h,i) => obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,''));
+      return obj;
+    })
+    .filter(p => p.name && p.name.length > 0);
 }
 
-// ── HELPERS ───────────────────────────
+function splitCSVLine(line){
+  const result = []; let cell = ''; let inQuote = false;
+  for(let i = 0; i < line.length; i++){
+    const ch = line[i];
+    if(ch === '"'){
+      if(inQuote && line[i+1] === '"'){ cell += '"'; i++; }
+      else { inQuote = !inQuote; }
+    } else if(ch === ',' && !inQuote){
+      result.push(cell); cell = '';
+    } else {
+      cell += ch;
+    }
+  }
+  result.push(cell);
+  return result;
+}
+
+// ── HELPERS ───────────────────────────────────────────────
 function resetForm(){
-  ['fName','fDesc','fLink'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fCat').value='';
-  document.getElementById('fBadge').value='';
-  document.getElementById('fFeatured').checked=false;
-  document.getElementById('fSchedule').value='';
-  document.getElementById('fImage').value='';
-  document.getElementById('imgPreview').style.display='none';
-  document.getElementById('imgStatus').textContent='';
-  setMsg('','');
+  ['fName','fDesc','fLink'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fCat').value = '';
+  document.getElementById('fBadge').value = '';
+  document.getElementById('fFeatured').checked = false;
+  document.getElementById('fSchedule').value = '';
+  document.getElementById('fImage').value = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgStatus').textContent = '';
+  setMsg('', '');
 }
-function setMsg(text,type){
-  const el=document.getElementById('formMsg');
-  el.textContent=text; el.className='form-msg '+type;
+
+function setMsg(text, type){
+  const el = document.getElementById('formMsg');
+  el.textContent = text;
+  el.className = 'form-msg ' + type;
 }
-function showToast(text,type='ok'){
-  const t=document.getElementById('toast');
-  t.textContent=text; t.className='show '+type;
-  setTimeout(()=>t.className='',4000);
+
+function showToast(text, type='ok'){
+  const t = document.getElementById('toast');
+  t.textContent = text; t.className = 'show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = '', 4500);
 }
 </script>
 </body>
