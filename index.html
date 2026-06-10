@@ -1009,11 +1009,27 @@ function initShop(cat) {
 // ── SHOP: LOAD DATA ────────────────────────────────────────
 async function loadProducts(cat) {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
+    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now(), {
+      method: 'GET',
+      redirect: 'follow'   // ← Google Apps Script redirect ke liye zaroori
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const txt = await res.text();
+    if (!txt || txt.trim().length === 0) throw new Error('Empty response');
     const parsed = parseCSV(txt);
-    allProducts = parsed.length > 0 ? parsed : getDemoProducts();
+    // Scheduled products filter — sirf woh dikhao jinki date aa gayi ho ya set nahi ho
+    const now = new Date();
+    allProducts = parsed.filter(p => {
+      if (!p.scheduled_date || p.scheduled_date.trim() === '') return true; // no schedule = always show
+      const d = new Date(p.scheduled_date);
+      return isNaN(d) || d <= now; // agar date past/present hai toh show karo
+    });
+    if (allProducts.length === 0 && parsed.length > 0) {
+      // Sab scheduled hain future mein — demo nahi, empty dikhao
+      allProducts = [];
+    }
   } catch(e) {
+    console.warn('Sheet load failed:', e.message);
     allProducts = getDemoProducts();
   }
   shopLoaded = true;
@@ -1127,7 +1143,7 @@ function getDemoProducts() {
 // Preload products silently on first load
 (async () => {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
+    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', redirect: 'follow' });
     const txt = await res.text();
     const parsed = parseCSV(txt);
     if (parsed.length > 0) { allProducts = parsed; shopLoaded = true; }
