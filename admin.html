@@ -502,25 +502,16 @@ async function uploadImgBB(file){
 }
 
 // ── LOAD PRODUCTS ─────────────────────────────────────────
-// KEY FIX: Google Apps Script CORS issue
-// Solution: URL mein ?callback use karke JSONP nahi — 
-// direct fetch with redirect follow karta hai
 async function loadProducts(){
   if(!SCRIPT_URL){ setUrlStatus('Apps Script URL save karo pehle','err'); return; }
   document.getElementById('tableStatus').innerHTML = '<span class="spinner"></span> Loading…';
   document.getElementById('productTableBody').innerHTML = '<tr class="empty-row"><td colspan="7"><span class="spinner"></span> Products load ho rahe hain…</td></tr>';
 
   try {
-    // Google Apps Script doGet — simple GET, text/csv return karta hai
-    const res = await fetch(SCRIPT_URL, {
-      method: 'GET',
-      redirect: 'follow'  // ← Apps Script redirect follow karna zaroori hai
-    });
-
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+    if(!res.ok) throw new Error('HTTP ' + res.status);
     const txt = await res.text();
-
-    if(!txt || txt.trim().length === 0) throw new Error('Sheet empty hai ya URL galat hai');
+    if(!txt || txt.trim().length === 0) throw new Error('Sheet empty ya URL galat hai');
 
     allProducts = parseCSV(txt);
     filteredProds = [...allProducts];
@@ -776,20 +767,21 @@ function updateStats(){
 
 // ── CSV PARSER ────────────────────────────────────────────
 function parseCSV(txt){
-  const lines = txt.trim().split('\n');
+  const lines = txt.trim().replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
   if(lines.length < 2) return [];
-  const headers = splitCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g,''));
+  const headers = splitCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g,'').trim());
   return lines.slice(1)
+    .filter(l => l.trim().length > 0)
     .map(l => {
-      const vals = splitCSVLine(l);
-      const obj  = {};
-      headers.forEach((h,i) => obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,''));
+      const vals = splitCSVLine(l); const obj = {};
+      headers.forEach((h,i) => { obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,'').trim(); });
       return obj;
     })
     .filter(p => p.name && p.name.length > 0);
 }
 
 function splitCSVLine(line){
+  line = line.replace(/\r$/,'');
   const result = []; let cell = ''; let inQuote = false;
   for(let i = 0; i < line.length; i++){
     const ch = line[i];
@@ -798,9 +790,7 @@ function splitCSVLine(line){
       else { inQuote = !inQuote; }
     } else if(ch === ',' && !inQuote){
       result.push(cell); cell = '';
-    } else {
-      cell += ch;
-    }
+    } else { cell += ch; }
   }
   result.push(cell);
   return result;
