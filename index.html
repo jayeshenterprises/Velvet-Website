@@ -1009,10 +1009,7 @@ function initShop(cat) {
 // ── SHOP: LOAD DATA ────────────────────────────────────────
 async function loadProducts(cat) {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now(), {
-      method: 'GET',
-      redirect: 'follow'   // ← Google Apps Script redirect ke liye zaroori
-    });
+    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const txt = await res.text();
     if (!txt || txt.trim().length === 0) throw new Error('Empty response');
@@ -1102,21 +1099,33 @@ function badgeClass(b) {
 
 // ── CSV PARSER ─────────────────────────────────────────────
 function parseCSV(txt) {
-  const lines = txt.trim().split('\n');
+  // \r\n aur \r dono handle karo (Windows/Mac line endings)
+  const lines = txt.trim().replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
   if (lines.length < 2) return [];
-  const headers = splitLine(lines[0]).map(h => h.toLowerCase().trim());
-  return lines.slice(1).map(l => {
-    const v = splitLine(l); const o = {};
-    headers.forEach((h, i) => o[h] = (v[i] || '').trim());
-    return o;
-  }).filter(p => p.name && p.name.length > 0);
+  const headers = splitLine(lines[0]).map(h =>
+    h.toLowerCase().trim().replace(/^"|"$/g,'').trim()
+  );
+  return lines.slice(1)
+    .filter(l => l.trim().length > 0)
+    .map(l => {
+      const v = splitLine(l); const o = {};
+      headers.forEach((h,i) => {
+        o[h] = (v[i]||'').trim().replace(/^"|"$/g,'').trim();
+      });
+      return o;
+    })
+    .filter(p => p.name && p.name.length > 0);
 }
 function splitLine(l) {
+  l = l.replace(/\r$/, '');
   const r = []; let c = ''; let q = false;
   for (let i = 0; i < l.length; i++) {
-    if (l[i] === '"') { q = !q; }
-    else if (l[i] === ',' && !q) { r.push(c); c = ''; }
-    else { c += l[i]; }
+    if (l[i] === '"') {
+      if (q && l[i+1] === '"') { c += '"'; i++; }
+      else { q = !q; }
+    } else if (l[i] === ',' && !q) {
+      r.push(c); c = '';
+    } else { c += l[i]; }
   }
   r.push(c); return r;
 }
@@ -1143,7 +1152,7 @@ function getDemoProducts() {
 // Preload products silently on first load
 (async () => {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', redirect: 'follow' });
+    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
     const txt = await res.text();
     const parsed = parseCSV(txt);
     if (parsed.length > 0) { allProducts = parsed; shopLoaded = true; }
