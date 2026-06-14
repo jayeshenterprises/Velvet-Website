@@ -396,6 +396,39 @@ img{display:block}
   .shop-main{padding:1.5rem}
   .p-grid{grid-template-columns:1fr}
 }
+
+/* ══ PRODUCT MODAL ══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,6,3,.85);z-index:800;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg-mid);border:1px solid var(--border);max-width:780px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .35s}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-box::before,.modal-box::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--copper-dk);border-style:solid;z-index:1}
+.modal-box::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.modal-box::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;z-index:2;line-height:1;padding:.2rem .5rem;transition:color .2s}
+.modal-close:hover{color:var(--cream)}
+.modal-inner{display:grid;grid-template-columns:1fr 1fr;min-height:360px}
+.modal-img{background:var(--bg-lift);display:flex;align-items:center;justify-content:center;min-height:280px;overflow:hidden}
+.modal-img img{width:100%;height:100%;object-fit:cover}
+.modal-img .modal-emoji{font-size:5rem;filter:sepia(.4) saturate(.7) brightness(1.3)}
+.modal-info{padding:2.2rem 2rem;display:flex;flex-direction:column;gap:.7rem}
+.modal-cat{font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--copper)}
+.modal-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;line-height:1.1;color:var(--cream)}
+.modal-desc{font-size:.84rem;line-height:1.8;color:var(--muted);flex:1}
+.modal-badge-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.modal-actions{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
+.modal-shop-btn{background:var(--copper);color:var(--bg);padding:.85rem 1.5rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;transition:background .2s;text-align:center;display:block}
+.modal-shop-btn:hover{background:var(--copper-lt)}
+.modal-copy-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.72rem 1.5rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.modal-copy-btn:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
+.modal-copy-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
+.modal-url-bar{background:var(--bg-lift);border:1px solid var(--border);padding:.55rem .8rem;font-size:.68rem;color:var(--muted);word-break:break-all;line-height:1.5;display:none}
+.modal-url-bar.show{display:block}
+@media(max-width:600px){
+  .modal-inner{grid-template-columns:1fr}
+  .modal-img{min-height:200px}
+  .modal-info{padding:1.5rem}
+}
 </style>
 </head>
 <body>
@@ -914,6 +947,31 @@ img{display:block}
 <!-- ══════════════════════════════════════
      MASTER JAVASCRIPT
 ══════════════════════════════════════ -->
+
+<!-- ══ PRODUCT MODAL ══ -->
+<div class="modal-overlay" id="productModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-inner">
+      <div class="modal-img" id="modalImg"></div>
+      <div class="modal-info">
+        <span class="modal-cat" id="modalCat"></span>
+        <h2 class="modal-name" id="modalName"></h2>
+        <div class="modal-badge-row" id="modalBadge"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <a id="modalShopBtn" href="#" target="_blank" rel="noopener noreferrer" class="modal-shop-btn">Shop Now ↗</a>
+          <button class="modal-copy-btn" onclick="copyProductUrl()">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Product URL
+          </button>
+          <div class="modal-url-bar" id="modalUrlBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── CONFIG ─────────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2m3ApL_244Ks5aZj2rApux9pntv3rjDQ5ipDssBai0UmB_6sQnd2afSVeRy7HMqxI/exec';
@@ -922,7 +980,20 @@ let allProducts = [];
 let shopLoaded = false;
 
 // ── PAGE ROUTER ─────────────────────────────────────────────
-function showPage(name, shopCat) {
+// ── SLUG HELPERS ───────────────────────────────────────────
+function toSlug(str) {
+  return (str || '').toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+function getProductUrl(p) {
+  const slug = toSlug(p.name);
+  const id   = p.id || slug;
+  return window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(id);
+}
+
+function showPage(name, shopCat, skipHistory) {
   // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Show target
@@ -935,6 +1006,13 @@ function showPage(name, shopCat) {
   document.querySelectorAll('#mobileMenu a[data-mob]').forEach(a => {
     a.classList.toggle('active-mob', a.dataset.mob === name);
   });
+  // Update browser URL
+  if (!skipHistory) {
+    const params = new URLSearchParams();
+    params.set('page', name);
+    if (name === 'shop' && shopCat && shopCat !== 'All') params.set('cat', shopCat);
+    history.pushState({page: name, cat: shopCat}, '', '?' + params.toString());
+  }
   // Scroll top
   window.scrollTo({top:0, behavior:'smooth'});
   // Page init
@@ -942,6 +1020,41 @@ function showPage(name, shopCat) {
   // Re-run fade observer
   setTimeout(runFadeObs, 60);
 }
+
+// ── PRODUCT PAGE from URL ───────────────────────────────────
+function openProductFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('product');
+  const page      = params.get('page') || 'home';
+  const cat       = params.get('cat')  || 'All';
+
+  if (productId) {
+    // Wait for products to load then open product modal
+    const tryOpen = (attempts) => {
+      if (allProducts.length > 0) {
+        const p = allProducts.find(x => {
+          const slug = toSlug(x.name);
+          const id   = x.id || slug;
+          return id === productId || slug === productId;
+        });
+        if (p) { showProductModal(p); showPage('shop', p.category, true); }
+        else   { showPage('shop', 'All', true); }
+      } else if (attempts > 0) {
+        setTimeout(() => tryOpen(attempts - 1), 400);
+      } else {
+        showPage('shop', 'All', true);
+      }
+    };
+    tryOpen(8);
+  } else {
+    showPage(page, cat, true);
+  }
+}
+
+// Browser back/forward
+window.addEventListener('popstate', e => {
+  if (e.state) showPage(e.state.page || 'home', e.state.cat, true);
+});
 
 // ── NAV SHRINK ─────────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -1008,26 +1121,29 @@ function initShop(cat) {
 
 // ── SHOP: LOAD DATA ────────────────────────────────────────
 async function loadProducts(cat) {
+  console.log('[VP] loadProducts called, cat:', cat);
+  console.log('[VP] APPS_SCRIPT_URL:', APPS_SCRIPT_URL);
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const url = APPS_SCRIPT_URL + '?t=' + Date.now();
+    const res = await fetch(url);
+    console.log('[VP] Response status:', res.status, 'ok:', res.ok);
     const txt = await res.text();
-    if (!txt || txt.trim().length === 0) throw new Error('Empty response');
+    console.log('[VP] Response length:', txt.length);
+    console.log('[VP] Response preview:', txt.substring(0, 300));
+    if (!txt || txt.trim().length === 0) throw new Error('Empty response from Sheet');
     const parsed = parseCSV(txt);
-    // Scheduled products filter — sirf woh dikhao jinki date aa gayi ho ya set nahi ho
+    console.log('[VP] Parsed count:', parsed.length, 'First:', parsed[0]);
     const now = new Date();
     allProducts = parsed.filter(p => {
-      if (!p.scheduled_date || p.scheduled_date.trim() === '') return true; // no schedule = always show
+      if (!p.scheduled_date || p.scheduled_date.trim() === '') return true;
       const d = new Date(p.scheduled_date);
-      return isNaN(d) || d <= now; // agar date past/present hai toh show karo
+      return isNaN(d) || d <= now;
     });
-    if (allProducts.length === 0 && parsed.length > 0) {
-      // Sab scheduled hain future mein — demo nahi, empty dikhao
-      allProducts = [];
-    }
+    console.log('[VP] After schedule filter:', allProducts.length);
   } catch(e) {
-    console.warn('Sheet load failed:', e.message);
+    console.error('[VP] loadProducts ERROR:', e.message);
     allProducts = getDemoProducts();
+    console.log('[VP] Using demo products:', allProducts.length);
   }
   shopLoaded = true;
   updateCounts();
@@ -1047,7 +1163,8 @@ function renderShopGrid(cat) {
     grid.innerHTML = '<div class="shop-empty"><span class="e-icon">🫙</span><p>No products in this category yet.<br>Check back soon!</p></div>';
     return;
   }
-  grid.innerHTML = list.map(buildCard).join('');
+  filteredForCard = list;
+  grid.innerHTML = list.map((p, i) => buildCard(p, i)).join('');
   grid.querySelectorAll('.fu').forEach((el, i) => {
     el.style.transitionDelay = `${i * .04}s`;
     fadeObs.observe(el);
@@ -1070,12 +1187,14 @@ function updateCounts() {
 }
 
 // ── CARD BUILDER ───────────────────────────────────────────
-function buildCard(p) {
+function buildCard(p, idx) {
   const badge = p.badge ? `<span class="p-badge ${badgeClass(p.badge)}">${p.badge}</span>` : '';
   const img = (p.image_url || '').startsWith('http')
     ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy">`
     : `<span class="p-emoji">${CAT_ICONS[p.category] || '🏠'}</span>`;
-  return `<a href="${p.link || '#'}" target="_blank" rel="noopener noreferrer" class="p-card fu">
+  const slug = toSlug(p.name);
+  const pid  = p.id || slug;
+  return `<div class="p-card fu" onclick="showProductModal(allProducts.find(x=>(x.id||toSlug(x.name))==='${pid}') || filteredForCard[${idx}])" style="cursor:pointer">
     ${badge}
     <div class="p-img">${img}</div>
     <div class="p-info">
@@ -1083,11 +1202,12 @@ function buildCard(p) {
       <p class="p-name">${p.name}</p>
       <p class="p-desc">${p.description || ''}</p>
       <div class="p-footer">
-        <span class="p-link">Shop Now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
+        <span class="p-link">View Product <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
       </div>
     </div>
-  </a>`;
+  </div>`;
 }
+let filteredForCard = [];
 
 function badgeClass(b) {
   if (!b) return '';
@@ -1149,15 +1269,109 @@ function getDemoProducts() {
 }
 
 // ── INIT ───────────────────────────────────────────────────
-// Preload products silently on first load
+// Read URL on load
+openProductFromUrl();
+
 (async () => {
   try {
     const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
     const txt = await res.text();
+    console.log('[VP] Raw CSV length:', txt.length);
+    console.log('[VP] First 200 chars:', txt.substring(0,200));
     const parsed = parseCSV(txt);
-    if (parsed.length > 0) { allProducts = parsed; shopLoaded = true; }
-  } catch(e) {}
+    console.log('[VP] Parsed products:', parsed.length);
+    if (parsed.length > 0) {
+      const now = new Date();
+      allProducts = parsed.filter(p => {
+        if (!p.scheduled_date || p.scheduled_date.trim() === '') return true;
+        const d = new Date(p.scheduled_date);
+        return isNaN(d) || d <= now;
+      });
+      shopLoaded = true;
+      console.log('[VP] Live products after schedule filter:', allProducts.length);
+    }
+  } catch(e) {
+    console.error('[VP] Preload error:', e.message);
+  }
 })();
+
+// ══ PRODUCT MODAL FUNCTIONS ══════════════════════════════════
+let currentModalProduct = null;
+
+function showProductModal(p) {
+  if (!p) return;
+  currentModalProduct = p;
+
+  // Update URL
+  const slug = toSlug(p.name);
+  const pid  = p.id || slug;
+  const url  = window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(pid);
+  history.pushState({product: pid}, '', '?product=' + encodeURIComponent(pid));
+
+  // Fill modal content
+  const imgEl = document.getElementById('modalImg');
+  if ((p.image_url || '').startsWith('http')) {
+    imgEl.innerHTML = `<img src="${p.image_url}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    imgEl.innerHTML = `<span class="modal-emoji">${CAT_ICONS[p.category] || '🏠'}</span>`;
+  }
+
+  document.getElementById('modalCat').textContent  = p.category || '';
+  document.getElementById('modalName').textContent = p.name || '';
+  document.getElementById('modalDesc').textContent = p.description || '';
+  document.getElementById('modalShopBtn').href     = p.link || '#';
+
+  const badgeEl = document.getElementById('modalBadge');
+  badgeEl.innerHTML = p.badge
+    ? `<span class="p-badge ${badgeClass(p.badge)}" style="position:static;font-size:.65rem">${p.badge}</span>`
+    : '';
+
+  // Reset copy bar
+  const urlBar = document.getElementById('modalUrlBar');
+  urlBar.textContent = url;
+  urlBar.classList.remove('show');
+
+  // Open
+  document.getElementById('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalProduct = null;
+  // Restore page URL
+  const params = new URLSearchParams();
+  params.set('page', 'shop');
+  history.pushState({page:'shop'}, '', '?' + params.toString());
+}
+
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('productModal')) closeModal();
+}
+
+function copyProductUrl() {
+  if (!currentModalProduct) return;
+  const slug = toSlug(currentModalProduct.name);
+  const pid  = currentModalProduct.id || slug;
+  const url  = window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(pid);
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('.modal-copy-btn');
+    const urlBar = document.getElementById('modalUrlBar');
+    urlBar.textContent = url;
+    urlBar.classList.add('show');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg> Copy Product URL'; }, 2500);
+  }).catch(() => {
+    const urlBar = document.getElementById('modalUrlBar');
+    urlBar.textContent = url;
+    urlBar.classList.add('show');
+  });
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
 </script>
 </body>
 </html>
