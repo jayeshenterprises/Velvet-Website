@@ -155,6 +155,10 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
 .btn-del{background:none;border:1px solid transparent;cursor:pointer;color:var(--muted);transition:all .2s;padding:.35rem .5rem;border-radius:2px}
 .btn-del:hover{color:var(--red);border-color:rgba(196,90,90,.25);background:rgba(196,90,90,.05)}
 .btn-del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;display:block}
+.btn-copy-url{background:none;border:1px solid transparent;cursor:pointer;color:var(--muted);transition:all .2s;padding:.35rem .5rem;border-radius:2px}
+.btn-copy-url:hover{color:var(--blue);border-color:rgba(90,143,196,.25);background:rgba(90,143,196,.05)}
+.btn-copy-url svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;display:block}
+.btn-copy-url.copied{color:var(--green)}
 .empty-row td{text-align:center;padding:4rem 2rem;color:var(--muted);font-size:.85rem;line-height:2}
 
 /* SPINNER */
@@ -234,11 +238,17 @@ body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-
       <button class="btn-sm primary" onclick="saveAndLoad()">Save & Load</button>
       <span id="urlStatus"></span>
     </div>
-    <div class="config-bar" style="margin-top:-0.5rem;margin-bottom:2rem">
+    <div class="config-bar" style="margin-top:-0.5rem">
       <span class="config-label">ImgBB API Key</span>
       <input type="password" class="config-input" id="imgbbKeyInput" placeholder="imgbb.com/api se milega">
       <button class="btn-sm" onclick="saveImgbbKey()">Save Key</button>
       <span id="imgbbStatus" class="config-ok"></span>
+    </div>
+    <div class="config-bar" style="margin-top:-0.5rem;margin-bottom:2rem">
+      <span class="config-label">Website URL</span>
+      <input type="text" class="config-input" id="websiteUrlInput" placeholder="https://velvet-pantry.vercel.app">
+      <button class="btn-sm" onclick="saveWebsiteUrl()">Save</button>
+      <span id="websiteUrlStatus" class="config-ok"></span>
     </div>
 
     <!-- ADD / EDIT FORM -->
@@ -401,6 +411,8 @@ function logout(){
 function initAdmin(){
   document.getElementById('scriptUrlInput').value = SCRIPT_URL;
   document.getElementById('imgbbKeyInput').value  = IMGBB_KEY;
+  WEBSITE_URL = localStorage.getItem('vp_website_url') || '';
+  document.getElementById('websiteUrlInput').value = WEBSITE_URL;
   if(SCRIPT_URL) loadProducts();
   else setUrlStatus('⚠ Pehle Apps Script URL save karo', 'err');
 }
@@ -508,12 +520,18 @@ async function loadProducts(){
   document.getElementById('productTableBody').innerHTML = '<tr class="empty-row"><td colspan="7"><span class="spinner"></span> Products load ho rahe hain…</td></tr>';
 
   try {
+    console.log('[VP Admin] Fetching:', SCRIPT_URL);
     const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+    console.log('[VP Admin] Status:', res.status, res.ok);
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const txt = await res.text();
+    console.log('[VP Admin] CSV length:', txt.length);
+    console.log('[VP Admin] CSV preview:', txt.substring(0,300));
     if(!txt || txt.trim().length === 0) throw new Error('Sheet empty ya URL galat hai');
 
     allProducts = parseCSV(txt);
+    console.log('[VP Admin] Parsed:', allProducts.length, 'products');
+    console.log('[VP Admin] First product:', allProducts[0]);
     filteredProds = [...allProducts];
     renderTable(filteredProds);
     updateStats();
@@ -521,18 +539,20 @@ async function loadProducts(){
     document.getElementById('tableStatus').textContent = allProducts.length + ' products';
 
   } catch(err){
-    console.error(err);
+    console.error('[VP Admin] LOAD ERROR:', err);
     document.getElementById('tableStatus').textContent = '⚠ Load failed';
     document.getElementById('productTableBody').innerHTML = `
       <tr class="empty-row"><td colspan="7">
-        <strong style="color:var(--red)">⚠ Products load nahi hue</strong><br><br>
-        Possible reasons:<br>
-        1. Apps Script URL galat hai<br>
-        2. Deployment "Anyone" pe set nahi ki<br>
-        3. Naya deploy karne ke baad purana URL use kar rahe ho<br><br>
-        <em style="font-size:.75rem;color:var(--muted)">Error: ${err.message}</em>
+        <strong style="color:var(--red);font-size:.9rem">⚠ Products load nahi hue</strong><br><br>
+        <strong style="color:var(--copper-lt)">Error:</strong> <code style="background:var(--bg-lift);padding:.2rem .5rem;color:var(--red)">${err.message}</code><br><br>
+        <strong style="color:var(--copper-lt)">Check karo:</strong><br>
+        1. Apps Script URL sahi hai?<br>
+        2. Deploy → <em>Who has access</em> = <strong>Anyone</strong> set hai?<br>
+        3. Code change ke baad <strong>New Deployment</strong> kiya?<br>
+        4. Sheet Row 1 = <code style="background:var(--bg-lift);padding:.1rem .4rem;color:var(--copper)">name,category,description,link,badge,featured,image_url,scheduled_date</code> hai?<br><br>
+        <em style="font-size:.72rem;color:var(--muted)">Browser Console (F12) mein [VP Admin] logs dekho for details</em>
       </td></tr>`;
-    setUrlStatus('⚠ Load failed — URL check karo', 'err');
+    setUrlStatus('⚠ ' + err.message, 'err');
   }
 }
 
@@ -740,6 +760,9 @@ function renderTable(list){
       <td>
         <div class="row-actions">
           <button class="btn-edit-row" onclick="startEdit(${rowNum})">✏ Edit</button>
+          <button class="btn-copy-url" onclick="copyProductUrl('${safeName}')" title="Product URL copy karo">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
           <button class="btn-del" onclick="deleteProduct(${rowNum},'${safeName}')" title="Delete">
             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           </button>
@@ -797,6 +820,38 @@ function splitCSVLine(line){
 }
 
 // ── HELPERS ───────────────────────────────────────────────
+
+// Slug generator — same as website
+function toSlug(str) {
+  return (str || '').toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+// Website URL config
+let WEBSITE_URL = localStorage.getItem('vp_website_url') || '';
+function saveWebsiteUrl(){
+  const v = document.getElementById('websiteUrlInput').value.trim().replace(/\/$/, '');
+  WEBSITE_URL = v;
+  localStorage.setItem('vp_website_url', v);
+  document.getElementById('websiteUrlStatus').textContent = '✓ Saved';
+  setTimeout(() => document.getElementById('websiteUrlStatus').textContent = '', 2000);
+}
+
+// Copy product URL
+function copyProductUrl(productName) {
+  const base = WEBSITE_URL || window.location.origin;
+  const slug = toSlug(productName);
+  const url  = base + '/index.html?product=' + encodeURIComponent(slug);
+
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('✓ URL copied!\n' + url, 'ok');
+  }).catch(() => {
+    showToast('URL: ' + url, 'info');
+  });
+}
+
 function resetForm(){
   ['fName','fDesc','fLink'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('fCat').value = '';
