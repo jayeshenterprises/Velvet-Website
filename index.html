@@ -165,6 +165,7 @@ img{display:block}
 .p-cat{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);display:block;margin-bottom:.3rem}
 .p-name{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:500;color:var(--cream);line-height:1.3;margin-bottom:.35rem}
 .p-desc{font-size:.76rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem}
+.p-desc-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .p-footer{border-top:1px solid var(--border);padding-top:.7rem;display:flex;justify-content:flex-end}
 .p-link{font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:var(--copper);display:flex;align-items:center;gap:.35rem;transition:color .2s}
 .p-link svg{width:11px;height:11px;transition:transform .2s}
@@ -397,37 +398,56 @@ img{display:block}
   .p-grid{grid-template-columns:1fr}
 }
 
-/* ══ PRODUCT MODAL ══ */
-.modal-overlay{position:fixed;inset:0;background:rgba(10,6,3,.85);z-index:800;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{background:var(--bg-mid);border:1px solid var(--border);max-width:780px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .35s}
-.modal-overlay.open .modal-box{transform:translateY(0)}
-.modal-box::before,.modal-box::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--copper-dk);border-style:solid;z-index:1}
-.modal-box::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
-.modal-box::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
-.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;z-index:2;line-height:1;padding:.2rem .5rem;transition:color .2s}
-.modal-close:hover{color:var(--cream)}
-.modal-inner{display:grid;grid-template-columns:1fr 1fr;min-height:360px}
-.modal-img{background:var(--bg-lift);display:flex;align-items:center;justify-content:center;min-height:280px;overflow:hidden}
-.modal-img img{width:100%;height:100%;object-fit:cover}
-.modal-img .modal-emoji{font-size:5rem;filter:sepia(.4) saturate(.7) brightness(1.3)}
-.modal-info{padding:2.2rem 2rem;display:flex;flex-direction:column;gap:.7rem}
-.modal-cat{font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--copper)}
-.modal-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;line-height:1.1;color:var(--cream)}
-.modal-desc{font-size:.84rem;line-height:1.8;color:var(--muted);flex:1}
-.modal-badge-row{display:flex;gap:.5rem;flex-wrap:wrap}
-.modal-actions{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
-.modal-shop-btn{background:var(--copper);color:var(--bg);padding:.85rem 1.5rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;transition:background .2s;text-align:center;display:block}
-.modal-shop-btn:hover{background:var(--copper-lt)}
-.modal-copy-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.72rem 1.5rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
-.modal-copy-btn:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
-.modal-copy-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
-.modal-url-bar{background:var(--bg-lift);border:1px solid var(--border);padding:.55rem .8rem;font-size:.68rem;color:var(--muted);word-break:break-all;line-height:1.5;display:none}
-.modal-url-bar.show{display:block}
-@media(max-width:600px){
-  .modal-inner{grid-template-columns:1fr}
-  .modal-img{min-height:200px}
+
   .modal-info{padding:1.5rem}
+}
+
+/* ══ PRODUCT PAGE ══ */
+#page-product{min-height:100vh}
+.product-back{display:inline-flex;align-items:center;gap:.55rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;padding:1.8rem 4rem 0;border:none;background:none;font-family:'Jost',sans-serif}
+.product-back:hover{color:var(--copper-lt)}
+.product-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;transition:transform .2s}
+.product-back:hover svg{transform:translateX(-3px)}
+.product-layout{display:grid;grid-template-columns:1fr 1fr;max-width:1100px;margin:0 auto;padding:2rem 4rem 5rem;gap:4rem;align-items:start}
+.product-img-col{position:sticky;top:88px}
+.product-img-wrap{background:var(--bg-lift);border:1px solid var(--border);aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover}
+.product-img-emoji{font-size:7rem;filter:sepia(.4) saturate(.7) brightness(1.3)}
+.product-img-corner{position:absolute;width:20px;height:20px;border-color:var(--copper-dk);border-style:solid;opacity:.4}
+.product-img-corner.tl{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.product-img-corner.br{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.product-info-col{padding-top:1rem}
+.product-eyebrow{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--copper);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.product-eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--copper-dk),transparent);opacity:.4;max-width:60px}
+.product-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.05;color:var(--cream);margin-bottom:1rem}
+.product-badge-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.product-badge-row .p-badge{position:static;font-size:.66rem;padding:.28rem .7rem}
+.product-divider{height:1px;background:linear-gradient(90deg,var(--copper-dk),transparent);opacity:.25;margin:1.4rem 0}
+.product-desc{font-size:.9rem;line-height:1.95;color:var(--muted);margin-bottom:2rem}
+.product-meta{display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;padding:1.2rem 1.4rem;background:var(--bg-lift);border:1px solid var(--border)}
+.product-meta-row{display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+.product-meta-label{color:var(--muted);letter-spacing:.08em}
+.product-meta-val{color:var(--cream-dk);text-align:right}
+.product-cta{display:block;width:100%;padding:1.05rem;background:var(--copper);color:var(--bg);font-family:'Jost',sans-serif;font-size:.76rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-align:center;border:none;cursor:pointer;transition:background .22s,transform .2s;text-decoration:none;margin-bottom:.7rem}
+.product-cta:hover{background:var(--copper-lt);transform:translateY(-2px)}
+.product-share-btn{width:100%;padding:.82rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.product-share-btn:hover{border-color:var(--copper-dk);color:var(--copper-lt)}
+.product-share-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
+.product-url-copied{font-size:.7rem;color:var(--green);text-align:center;margin-top:.4rem;height:1rem;letter-spacing:.06em}
+.product-related{padding:4rem 4rem 5rem;background:var(--bg-mid);border-top:1px solid var(--border)}
+.product-related-head{margin-bottom:2rem}
+.product-related-head h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream)}
+.product-related-head h3 em{font-style:italic;color:var(--copper-lt)}
+.product-related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+@media(max-width:900px){
+  .product-layout{grid-template-columns:1fr;padding:1.5rem;gap:2rem}
+  .product-img-col{position:static}
+  .product-back{padding:1.5rem 1.5rem 0}
+  .product-related{padding:3rem 1.5rem}
+  .product-related-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+  .product-related-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -948,29 +968,93 @@ img{display:block}
      MASTER JAVASCRIPT
 ══════════════════════════════════════ -->
 
-<!-- ══ PRODUCT MODAL ══ -->
-<div class="modal-overlay" id="productModal" onclick="closeModalOnOverlay(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-inner">
-      <div class="modal-img" id="modalImg"></div>
-      <div class="modal-info">
-        <span class="modal-cat" id="modalCat"></span>
-        <h2 class="modal-name" id="modalName"></h2>
-        <div class="modal-badge-row" id="modalBadge"></div>
-        <p class="modal-desc" id="modalDesc"></p>
-        <div class="modal-actions">
-          <a id="modalShopBtn" href="#" target="_blank" rel="noopener noreferrer" class="modal-shop-btn">Shop Now ↗</a>
-          <button class="modal-copy-btn" onclick="copyProductUrl()">
-            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copy Product URL
-          </button>
-          <div class="modal-url-bar" id="modalUrlBar"></div>
+<!-- ══════════════════════════════════════
+     PAGE: PRODUCT
+══════════════════════════════════════ -->
+<div id="page-product" class="page">
+
+  <button class="product-back fu" onclick="showPage('shop')">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Shop
+  </button>
+
+  <div class="product-layout">
+    <!-- Image -->
+    <div class="product-img-col fu">
+      <div class="product-img-wrap" id="pImgWrap">
+        <div class="product-img-corner tl"></div>
+        <div class="product-img-corner br"></div>
+        <span class="product-img-emoji" id="pEmoji">🍳</span>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="product-info-col">
+      <p class="product-eyebrow fu" id="pCat">Cookware</p>
+      <h1 class="product-title fu d1" id="pName">Product Name</h1>
+      <div class="product-badge-row fu d1" id="pBadgeRow"></div>
+      <div class="product-divider fu d2"></div>
+      <p class="product-desc fu d2" id="pDesc"></p>
+      <div class="product-meta fu d3" id="pMeta" style="display:none">
+        <div class="product-meta-row">
+          <span class="product-meta-label">Category</span>
+          <span class="product-meta-val" id="pMetaCat">—</span>
         </div>
+      </div>
+      <div class="fu d3">
+        <a class="product-cta" id="pShopBtn" href="#" target="_blank" rel="noopener noreferrer">
+          Shop Now ↗
+        </a>
+        <button class="product-share-btn" onclick="copyCurrentProductUrl()">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Product Link
+        </button>
+        <p class="product-url-copied" id="pUrlCopied"></p>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Related Products -->
+  <div class="product-related">
+    <div class="product-related-head">
+      <h3>More from <em id="pRelatedCatLabel">this category</em></h3>
+    </div>
+    <div class="product-related-grid" id="pRelatedGrid"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Velvet Pantry</p>
+        <p class="footer-tag">Hand-curated kitchen essentials for the passionate home cook.</p>
+        <div class="footer-social"><a href="https://in.pinterest.com/thevelvetpantry/" target="_blank" rel="noopener" class="social-ico"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a></div>
+      </div>
+      <div class="footer-col"><h4>Collections</h4><ul>
+        <li><a onclick="showPage('shop','Cookware')">Cookware</a></li>
+        <li><a onclick="showPage('shop','Knives')">Knives & Boards</a></li>
+        <li><a onclick="showPage('shop','Bakeware')">Bakeware</a></li>
+        <li><a onclick="showPage('shop','Storage')">Storage</a></li>
+        <li><a onclick="showPage('shop','Appliances')">Appliances</a></li>
+        <li><a onclick="showPage('shop','Tools')">Gadgets</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul>
+        <li><a onclick="showPage('home')">Home</a></li>
+        <li><a onclick="showPage('shop')">Shop</a></li>
+        <li><a onclick="showPage('about')">About</a></li>
+        <li><a onclick="showPage('contact')">Contact</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul>
+        <li><a onclick="showPage('about');setTimeout(()=>document.getElementById('disclosure').scrollIntoView({behavior:'smooth'}),300)">Affiliate Disclosure</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
+      <p class="footer-disc">We may earn a small commission on purchases — at no extra cost to you.</p>
+    </div>
+  </footer>
+
+</div><!-- /page-product -->
 
 <script>
 // ── CONFIG ─────────────────────────────────────────────────
@@ -980,81 +1064,27 @@ let allProducts = [];
 let shopLoaded = false;
 
 // ── PAGE ROUTER ─────────────────────────────────────────────
-// ── SLUG HELPERS ───────────────────────────────────────────
-function toSlug(str) {
-  return (str || '').toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim().replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
-function getProductUrl(p) {
-  const slug = toSlug(p.name);
-  const id   = p.id || slug;
-  return window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(id);
-}
-
 function showPage(name, shopCat, skipHistory) {
-  // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // Show target
   const target = document.getElementById('page-' + name);
   if (target) target.classList.add('active');
-  // Nav active state
+  const navPage = (name === 'product') ? 'shop' : name;
   document.querySelectorAll('.nav-links a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === name);
+    a.classList.toggle('active', a.dataset.page === navPage);
   });
   document.querySelectorAll('#mobileMenu a[data-mob]').forEach(a => {
-    a.classList.toggle('active-mob', a.dataset.mob === name);
+    a.classList.toggle('active-mob', a.dataset.mob === navPage);
   });
-  // Update browser URL
-  if (!skipHistory) {
+  if (!skipHistory && name !== 'product') {
     const params = new URLSearchParams();
     params.set('page', name);
     if (name === 'shop' && shopCat && shopCat !== 'All') params.set('cat', shopCat);
     history.pushState({page: name, cat: shopCat}, '', '?' + params.toString());
   }
-  // Scroll top
   window.scrollTo({top:0, behavior:'smooth'});
-  // Page init
   if (name === 'shop') initShop(shopCat || 'All');
-  // Re-run fade observer
   setTimeout(runFadeObs, 60);
 }
-
-// ── PRODUCT PAGE from URL ───────────────────────────────────
-function openProductFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const productId = params.get('product');
-  const page      = params.get('page') || 'home';
-  const cat       = params.get('cat')  || 'All';
-
-  if (productId) {
-    // Wait for products to load then open product modal
-    const tryOpen = (attempts) => {
-      if (allProducts.length > 0) {
-        const p = allProducts.find(x => {
-          const slug = toSlug(x.name);
-          const id   = x.id || slug;
-          return id === productId || slug === productId;
-        });
-        if (p) { showProductModal(p); showPage('shop', p.category, true); }
-        else   { showPage('shop', 'All', true); }
-      } else if (attempts > 0) {
-        setTimeout(() => tryOpen(attempts - 1), 400);
-      } else {
-        showPage('shop', 'All', true);
-      }
-    };
-    tryOpen(8);
-  } else {
-    showPage(page, cat, true);
-  }
-}
-
-// Browser back/forward
-window.addEventListener('popstate', e => {
-  if (e.state) showPage(e.state.page || 'home', e.state.cat, true);
-});
 
 // ── NAV SHRINK ─────────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -1192,22 +1222,20 @@ function buildCard(p, idx) {
   const img = (p.image_url || '').startsWith('http')
     ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy">`
     : `<span class="p-emoji">${CAT_ICONS[p.category] || '🏠'}</span>`;
-  const slug = toSlug(p.name);
-  const pid  = p.id || slug;
-  return `<div class="p-card fu" onclick="showProductModal(allProducts.find(x=>(x.id||toSlug(x.name))==='${pid}') || filteredForCard[${idx}])" style="cursor:pointer">
+  const pid = p.pid || String(100000001 + idx);
+  return `<div class="p-card fu" onclick="openProductPage('${pid}')" style="cursor:pointer">
     ${badge}
     <div class="p-img">${img}</div>
     <div class="p-info">
       <span class="p-cat">${p.category || 'General'}</span>
       <p class="p-name">${p.name}</p>
-      <p class="p-desc">${p.description || ''}</p>
+      <p class="p-desc p-desc-clamp">${p.description || ''}</p>
       <div class="p-footer">
         <span class="p-link">View Product <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span>
       </div>
     </div>
   </div>`;
 }
-let filteredForCard = [];
 
 function badgeClass(b) {
   if (!b) return '';
@@ -1232,9 +1260,11 @@ function parseCSV(txt) {
       headers.forEach((h,i) => {
         o[h] = (v[i]||'').trim().replace(/^"|"$/g,'').trim();
       });
+      o.pid = o.pid || String(100000000 + allProducts.length + 1);
       return o;
     })
-    .filter(p => p.name && p.name.length > 0);
+    .filter(p => p.name && p.name.length > 0)
+    .map((p, i) => { if(!p.pid || p.pid.length < 6) p.pid = String(100000001 + i); return p; });
 }
 function splitLine(l) {
   l = l.replace(/\r$/, '');
@@ -1268,10 +1298,99 @@ function getDemoProducts() {
   ];
 }
 
-// ── INIT ───────────────────────────────────────────────────
-// Read URL on load
-openProductFromUrl();
 
+// ══════════════════════════════════════════════════════════
+// PRODUCT PAGE SYSTEM
+// ══════════════════════════════════════════════════════════
+
+function toSlug(str) {
+  return (str || '').toLowerCase()
+    .replace(/[^a-z0-9\s-]/g,'').trim()
+    .replace(/\s+/g,'-').replace(/-+/g,'-');
+}
+
+function openProductPage(pid) {
+  pid = String(pid);
+  const p = allProducts.find(x => String(x.pid) === pid);
+  if (!p) { console.warn('[VP] Product not found:', pid); return; }
+  renderProductPage(p);
+  showPage('product', null, true);
+  history.pushState({page:'product', pid}, '', '?product=' + pid);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderProductPage(p) {
+  const wrap = document.getElementById('pImgWrap');
+  if ((p.image_url||'').startsWith('http')) {
+    wrap.innerHTML = '<div class="product-img-corner tl"></div><div class="product-img-corner br"></div><img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover">';
+  } else {
+    wrap.innerHTML = '<div class="product-img-corner tl"></div><div class="product-img-corner br"></div><span class="product-img-emoji">'+(CAT_ICONS[p.category]||'🏠')+'</span>';
+  }
+  document.getElementById('pCat').textContent  = p.category || '';
+  document.getElementById('pName').textContent = p.name || '';
+  document.getElementById('pDesc').textContent = p.description || '';
+  document.getElementById('pShopBtn').href     = p.link || '#';
+  document.getElementById('pMetaCat').textContent = p.category || '—';
+  document.getElementById('pMeta').style.display = 'flex';
+  const badgeRow = document.getElementById('pBadgeRow');
+  badgeRow.innerHTML = p.badge ? '<span class="p-badge '+badgeClass(p.badge)+'" style="position:static;font-size:.66rem;padding:.28rem .7rem">'+p.badge+'</span>' : '';
+  const related = allProducts.filter(x => x.category === p.category && x.pid !== p.pid).slice(0,4);
+  const relGrid = document.getElementById('pRelatedGrid');
+  document.getElementById('pRelatedCatLabel').textContent = p.category || 'this category';
+  if (related.length > 0) {
+    relGrid.innerHTML = related.map((r,i) => buildCard(r,i)).join('');
+    relGrid.querySelectorAll('.fu').forEach(el => fadeObs.observe(el));
+    document.querySelector('.product-related').style.display = 'block';
+  } else {
+    document.querySelector('.product-related').style.display = 'none';
+  }
+  document.getElementById('pUrlCopied').textContent = '';
+}
+
+function copyCurrentProductUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const pid = params.get('product');
+  if (!pid) return;
+  const url = window.location.origin + window.location.pathname + '?product=' + pid;
+  navigator.clipboard.writeText(url).then(() => {
+    const el = document.getElementById('pUrlCopied');
+    el.textContent = '✓ Link copied!';
+    setTimeout(() => el.textContent = '', 3000);
+  }).catch(() => { document.getElementById('pUrlCopied').textContent = url; });
+}
+
+function handleUrlOnLoad() {
+  const params = new URLSearchParams(window.location.search);
+  const pid  = params.get('product');
+  const page = params.get('page') || 'home';
+  const cat  = params.get('cat')  || 'All';
+  if (pid) {
+    const tryOpen = (n) => {
+      const p = allProducts.find(x => String(x.pid) === pid);
+      if (p) { renderProductPage(p); showPage('product', null, true); }
+      else if (n > 0) setTimeout(() => tryOpen(n-1), 500);
+      else showPage('shop','All',true);
+    };
+    tryOpen(12);
+  } else {
+    showPage(page, cat, true);
+  }
+}
+
+window.addEventListener('popstate', () => {
+  const params = new URLSearchParams(window.location.search);
+  const pid  = params.get('product');
+  const page = params.get('page') || 'home';
+  const cat  = params.get('cat')  || 'All';
+  if (pid) {
+    const p = allProducts.find(x => String(x.pid) === pid);
+    if (p) { renderProductPage(p); showPage('product',null,true); }
+    else showPage('shop','All',true);
+  } else { showPage(page,cat,true); }
+});
+
+// ── INIT ───────────────────────────────────────────────────
+handleUrlOnLoad();
 (async () => {
   try {
     const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
@@ -1295,82 +1414,7 @@ openProductFromUrl();
   }
 })();
 
-// ══ PRODUCT MODAL FUNCTIONS ══════════════════════════════════
-let currentModalProduct = null;
 
-function showProductModal(p) {
-  if (!p) return;
-  currentModalProduct = p;
-
-  // Update URL
-  const slug = toSlug(p.name);
-  const pid  = p.id || slug;
-  const url  = window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(pid);
-  history.pushState({product: pid}, '', '?product=' + encodeURIComponent(pid));
-
-  // Fill modal content
-  const imgEl = document.getElementById('modalImg');
-  if ((p.image_url || '').startsWith('http')) {
-    imgEl.innerHTML = `<img src="${p.image_url}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`;
-  } else {
-    imgEl.innerHTML = `<span class="modal-emoji">${CAT_ICONS[p.category] || '🏠'}</span>`;
-  }
-
-  document.getElementById('modalCat').textContent  = p.category || '';
-  document.getElementById('modalName').textContent = p.name || '';
-  document.getElementById('modalDesc').textContent = p.description || '';
-  document.getElementById('modalShopBtn').href     = p.link || '#';
-
-  const badgeEl = document.getElementById('modalBadge');
-  badgeEl.innerHTML = p.badge
-    ? `<span class="p-badge ${badgeClass(p.badge)}" style="position:static;font-size:.65rem">${p.badge}</span>`
-    : '';
-
-  // Reset copy bar
-  const urlBar = document.getElementById('modalUrlBar');
-  urlBar.textContent = url;
-  urlBar.classList.remove('show');
-
-  // Open
-  document.getElementById('productModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('productModal').classList.remove('open');
-  document.body.style.overflow = '';
-  currentModalProduct = null;
-  // Restore page URL
-  const params = new URLSearchParams();
-  params.set('page', 'shop');
-  history.pushState({page:'shop'}, '', '?' + params.toString());
-}
-
-function closeModalOnOverlay(e) {
-  if (e.target === document.getElementById('productModal')) closeModal();
-}
-
-function copyProductUrl() {
-  if (!currentModalProduct) return;
-  const slug = toSlug(currentModalProduct.name);
-  const pid  = currentModalProduct.id || slug;
-  const url  = window.location.origin + window.location.pathname + '?product=' + encodeURIComponent(pid);
-  navigator.clipboard.writeText(url).then(() => {
-    const btn = document.querySelector('.modal-copy-btn');
-    const urlBar = document.getElementById('modalUrlBar');
-    urlBar.textContent = url;
-    urlBar.classList.add('show');
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg> Copy Product URL'; }, 2500);
-  }).catch(() => {
-    const urlBar = document.getElementById('modalUrlBar');
-    urlBar.textContent = url;
-    urlBar.classList.add('show');
-  });
-}
-
-// Close modal on Escape key
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 </script>
 </body>
