@@ -841,9 +841,11 @@ function saveWebsiteUrl(){
 
 // Copy product URL
 function copyProductUrl(productName) {
-  const base = WEBSITE_URL || window.location.origin;
-  const slug = toSlug(productName);
-  const url  = base + '/index.html?product=' + encodeURIComponent(slug);
+  // Find product by name to get numeric PID
+  const p = allProducts.find(x => x.name === productName);
+  const base = (WEBSITE_URL || window.location.origin).replace(/\/+$/, '');
+  const pid = p ? p.pid : toSlug(productName);
+  const url = base + '/?product=' + pid;
 
   navigator.clipboard.writeText(url).then(() => {
     showToast('✓ URL copied!\n' + url, 'ok');
