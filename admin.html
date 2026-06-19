@@ -760,7 +760,7 @@ function renderTable(list){
       <td>
         <div class="row-actions">
           <button class="btn-edit-row" onclick="startEdit(${rowNum})">✏ Edit</button>
-          <button class="btn-copy-url" onclick="copyProductUrl('${safeName}')" title="Product URL copy karo">
+          <button class="btn-copy-url" onclick="copyProductUrl('${p.pid}')" title="Product URL copy karo">
             <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
           <button class="btn-del" onclick="deleteProduct(${rowNum},'${safeName}')" title="Delete">
@@ -800,7 +800,12 @@ function parseCSV(txt){
       headers.forEach((h,i) => { obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,'').trim(); });
       return obj;
     })
-    .filter(p => p.name && p.name.length > 0);
+    .filter(p => p.name && p.name.length > 0)
+    .map((p, i) => {
+      // ── Stable numeric PID — same formula as website ──
+      if (!p.pid || p.pid.trim() === '') p.pid = String(100000001 + i);
+      return p;
+    });
 }
 
 function splitCSVLine(line){
@@ -840,13 +845,9 @@ function saveWebsiteUrl(){
 }
 
 // Copy product URL
-function copyProductUrl(productName) {
-  // Find product by name to get numeric PID
-  const p = allProducts.find(x => x.name === productName);
+function copyProductUrl(pid) {
   const base = (WEBSITE_URL || window.location.origin).replace(/\/+$/, '');
-  const pid = p ? p.pid : toSlug(productName);
-  const url = base + '/?product=' + pid;
-
+  const url  = base + '/?product=' + pid;
   navigator.clipboard.writeText(url).then(() => {
     showToast('✓ URL copied!\n' + url, 'ok');
   }).catch(() => {
