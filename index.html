@@ -587,10 +587,11 @@ img{display:block}
     <span class="view-all fu d2" onclick="showPage('shop')">View All Products →</span>
   </div>
   <div class="products-grid" id="homeFeatured">
-    <a href="#" class="p-card fu d1"><span class="p-badge pb-best">Bestseller</span><div class="p-img"><span class="p-emoji">🍳</span></div><div class="p-info"><span class="p-cat">Cookware</span><p class="p-name">Cast Iron Skillet</p><p class="p-desc">Pre-seasoned perfection. Oven-safe, induction-ready. A kitchen essential.</p><div class="p-footer"><span class="p-link">Shop Now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span></div></div></a>
-    <a href="#" class="p-card fu d2"><span class="p-badge pb-pick">VP Pick</span><div class="p-img"><span class="p-emoji">🫙</span></div><div class="p-info"><span class="p-cat">Pantry & Storage</span><p class="p-name">Glass Pantry Jar Set</p><p class="p-desc">Airtight seal, stackable design. Keeps dry goods fresh for longer.</p><div class="p-footer"><span class="p-link">Shop Now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span></div></div></a>
-    <a href="#" class="p-card fu d3"><span class="p-badge pb-new">New Arrival</span><div class="p-img"><span class="p-emoji">🔪</span></div><div class="p-info"><span class="p-cat">Knives</span><p class="p-name">8" Pro Chef's Knife</p><p class="p-desc">High-carbon German steel. Razor-sharp and beautifully balanced.</p><div class="p-footer"><span class="p-link">Shop Now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span></div></div></a>
-    <a href="#" class="p-card fu d4"><span class="p-badge pb-best">Bestseller</span><div class="p-img"><span class="p-emoji">🫕</span></div><div class="p-info"><span class="p-cat">Cookware</span><p class="p-name">Enameled Dutch Oven</p><p class="p-desc">5.5 qt. For slow-cooked soups, stews, and crusty no-knead bread.</p><div class="p-footer"><span class="p-link">Shop Now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></span></div></div></a>
+    <!-- Dynamically loaded from sheet — featured=yes products -->
+    <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line"></div></div></div>
+    <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line"></div></div></div>
+    <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line"></div></div></div>
+    <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line"></div></div></div>
   </div>
 </section>
 
@@ -659,7 +660,6 @@ img{display:block}
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
-    <p class="footer-disc">Velvet Pantry participates in affiliate programmes. We may earn a small commission when you make a purchase through our links — at no extra cost to you. We only recommend products we genuinely believe in.</p>
   </div>
 </footer>
 
@@ -747,7 +747,6 @@ img{display:block}
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
-    <p class="footer-disc">Velvet Pantry participates in affiliate programmes. We may earn a small commission when you make a purchase through our links — at no extra cost to you.</p>
   </div>
 </footer>
 
@@ -859,7 +858,6 @@ img{display:block}
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
-    <p class="footer-disc">Velvet Pantry participates in affiliate programmes. We may earn a small commission when you make a purchase through our links — at no extra cost to you.</p>
   </div>
 </footer>
 
@@ -957,7 +955,6 @@ img{display:block}
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
-    <p class="footer-disc">Velvet Pantry participates in affiliate programmes. We may earn a small commission when you make a purchase through our links — at no extra cost to you.</p>
   </div>
 </footer>
 
@@ -1039,7 +1036,6 @@ img{display:block}
     </div>
     <div class="footer-bottom">
       <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
-      <p class="footer-disc">We may earn a small commission on purchases — at no extra cost to you.</p>
     </div>
   </footer>
 
@@ -1167,6 +1163,7 @@ async function loadProducts(cat) {
   shopLoaded = true;
   updateCounts();
   renderShopGrid(cat || 'All');
+  renderHomeFeatured();
 }
 
 // ── SHOP: RENDER ───────────────────────────────────────────
@@ -1363,6 +1360,27 @@ window.addEventListener('popstate', () => {
   } else { showPage(page,cat,true); }
 });
 
+// ── RENDER HOME FEATURED ──────────────────────────────────
+function renderHomeFeatured() {
+  const grid = document.getElementById('homeFeatured');
+  if (!grid) return;
+  const featured = allProducts
+    .filter(p => p.featured === 'yes' || p.featured === 'true')
+    .slice(0, 4);
+  if (featured.length === 0) {
+    // Koi featured nahi — top 4 dikhao
+    const top4 = allProducts.slice(0, 4);
+    if (top4.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;text-align:center;padding:3rem">Products load ho rahe hain…</p>';
+      return;
+    }
+    grid.innerHTML = top4.map((p, i) => buildCard(p, i)).join('');
+  } else {
+    grid.innerHTML = featured.map((p, i) => buildCard(p, i)).join('');
+  }
+  grid.querySelectorAll('.fu').forEach(el => fadeObs.observe(el));
+}
+
 // ── INIT ───────────────────────────────────────────────────
 handleUrlOnLoad();
 (async () => {
@@ -1382,6 +1400,7 @@ handleUrlOnLoad();
       });
       shopLoaded = true;
       console.log('[VP] Live products after schedule filter:', allProducts.length);
+      renderHomeFeatured();
     }
   } catch(e) {
     console.error('[VP] Preload error:', e.message);
