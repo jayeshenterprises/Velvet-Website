@@ -271,15 +271,6 @@ img{display:block}
 .quote-block::before{content:'\201C';position:absolute;font-family:'Cormorant Garamond',serif;font-size:22rem;color:rgba(196,137,90,.04);top:-4rem;left:1.5rem;line-height:1;pointer-events:none;user-select:none}
 .quote-block blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:300;font-style:italic;color:var(--cream);max-width:800px;margin:0 auto 1.3rem;line-height:1.45;position:relative;z-index:1}
 .values-section{padding:6rem 4rem;background:var(--bg)}
-.values-head{text-align:center;margin-bottom:3.5rem}
-.values-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--cream)}
-.values-head h2 em{font-style:italic;color:var(--copper-lt)}
-.value-card-ab{background:var(--bg-mid);padding:2.8rem 2.2rem;transition:background .3s}
-.value-card-ab:hover{background:var(--bg-lift)}
-.value-icon{font-size:1.8rem;display:block;margin-bottom:.9rem;filter:sepia(.4) saturate(.7) brightness(1.3)}
-.pin-strip{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:3.5rem 4rem;background:var(--bg-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
-.pin-strip-text h3{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--cream);margin-bottom:.3rem}
-.pin-strip-text p{font-size:.84rem;color:var(--muted)}
 .disclosure{padding:5rem 4rem;background:var(--bg);scroll-margin-top:80px}
 .disclosure-inner{max-width:780px;margin:0 auto}
 .disc-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(196,137,90,.07);border:1px solid rgba(196,137,90,.18);color:var(--copper-lt);padding:.45rem 1rem;font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.5rem}
@@ -290,6 +281,15 @@ img{display:block}
 .disclosure p a{color:var(--copper-lt);border-bottom:1px solid rgba(196,137,90,.3);transition:border-color .2s;cursor:pointer}
 .disclosure p a:hover{border-color:var(--copper-lt)}
 .disc-divider{width:60px;height:1px;background:var(--copper-dk);opacity:.4;margin:2rem 0}
+.values-head{text-align:center;margin-bottom:3.5rem}
+.values-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--cream)}
+.values-head h2 em{font-style:italic;color:var(--copper-lt)}
+.value-card-ab{background:var(--bg-mid);padding:2.8rem 2.2rem;transition:background .3s}
+.value-card-ab:hover{background:var(--bg-lift)}
+.value-icon{font-size:1.8rem;display:block;margin-bottom:.9rem;filter:sepia(.4) saturate(.7) brightness(1.3)}
+.pin-strip{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:3.5rem 4rem;background:var(--bg-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.pin-strip-text h3{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--cream);margin-bottom:.3rem}
+.pin-strip-text p{font-size:.84rem;color:var(--muted)}
 
 /* ══════════════════════════════════════
    CONTACT PAGE
@@ -335,6 +335,9 @@ img{display:block}
 ══════════════════════════════════════ */
 .footer{background:#0e0804;border-top:1px solid var(--border);padding:4.5rem 4rem 2rem}
 .footer-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-bottom{border-top:1px solid rgba(196,137,90,.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-size:.72rem;color:var(--muted);opacity:.55}
+.footer-disc{font-size:.68rem;color:var(--muted);opacity:.48;max-width:460px;text-align:right;line-height:1.6}
 .footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:var(--copper-lt);letter-spacing:.1em;margin-bottom:.75rem}
 .footer-tag{font-size:.8rem;line-height:1.75;color:var(--muted);margin-bottom:1.5rem}
 .footer-social{display:flex;gap:.6rem}
@@ -346,9 +349,6 @@ img{display:block}
 .footer-col li{margin-bottom:.6rem}
 .footer-col a{font-size:.8rem;color:var(--muted);transition:color .2s;cursor:pointer}
 .footer-col a:hover{color:var(--cream)}
-.footer-bottom{border-top:1px solid rgba(196,137,90,.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem}
-.footer-copy{font-size:.72rem;color:var(--muted);opacity:.55}
-.footer-disc{font-size:.68rem;color:var(--muted);opacity:.48;max-width:460px;text-align:right;line-height:1.6}
 
 /* ══════════════════════════════════════
    RESPONSIVE
@@ -387,12 +387,11 @@ img{display:block}
   .footer{padding:3rem 1.5rem 1.5rem}
   .footer-grid{grid-template-columns:1fr;gap:2rem}
   .footer-disc{text-align:left}
-  .intro-text{padding:3rem 1.5rem}
+    .intro-text{padding:3rem 1.5rem}
   .intro-stats{flex-wrap:wrap;gap:1.5rem}
   .about-hero,.contact-hero{padding:8rem 1.5rem 3.5rem}
   .about-hero .corner,.contact-hero .corner,.shop-hero .corner{display:none}
-  .values-section,.quote-block,.pin-strip,.disclosure{padding-inline:1.5rem}
-  .pin-strip{flex-direction:column;align-items:flex-start}
+  .values-section,.quote-block,.pin-strip,  .pin-strip{flex-direction:column;align-items:flex-start}
   .shop-hero{padding:8rem 1.5rem 3rem}
   .shop-main{padding:1.5rem}
   .p-grid{grid-template-columns:1fr}
@@ -653,10 +652,6 @@ img{display:block}
       <li><a onclick="showPage('about')">About</a></li>
       <li><a onclick="showPage('contact')">Contact</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Legal</h4><ul>
-      <li><a onclick="showPage('about');setTimeout(()=>document.getElementById('disclosure').scrollIntoView({behavior:'smooth'}),300)">Affiliate Disclosure</a></li>
-      <li><a href="#">Privacy Policy</a></li>
-    </ul></div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
@@ -740,10 +735,6 @@ img{display:block}
       <li><a onclick="showPage('about')">About</a></li>
       <li><a onclick="showPage('contact')">Contact</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Legal</h4><ul>
-      <li><a onclick="showPage('about');setTimeout(()=>document.getElementById('disclosure').scrollIntoView({behavior:'smooth'}),300)">Affiliate Disclosure</a></li>
-      <li><a href="#">Privacy Policy</a></li>
-    </ul></div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
@@ -818,22 +809,6 @@ img{display:block}
   </a>
 </div>
 
-<div class="copper-line"></div>
-
-<section class="disclosure" id="disclosure">
-  <div class="disclosure-inner">
-    <div class="disc-badge fu">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Affiliate Disclosure
-    </div>
-    <h2 class="fu d1">Our <em>Disclosure</em></h2>
-    <div class="disc-divider fu d2"></div>
-    <p class="fu d2">Velvet Pantry participates in affiliate marketing programmes. This means that when you click on certain links on our website and complete a purchase, we may receive a small commission — at absolutely no extra cost to you.</p>
-    <p class="fu d3">This commission helps us maintain this platform and continue discovering and sharing the best kitchen products with our community. Every rupee earned goes back into making Velvet Pantry better for you.</p>
-    <p class="fu d3">We want to be completely transparent: our product recommendations are <strong style="color:var(--cream-dk);font-weight:400;">never</strong> influenced by whether or not a commission is earned. Every item featured on Velvet Pantry is selected purely on the basis of quality, usefulness, and our genuine belief in its value to you.</p>
-    <p class="fu d4">If you have any questions about our affiliate relationships or disclosure practices, please feel free to <a onclick="showPage('contact')">reach out to us</a> — we are always happy to be transparent.</p>
-  </div>
-</section>
 
 <footer class="footer">
   <div class="footer-grid">
@@ -851,15 +826,28 @@ img{display:block}
       <li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li>
       <li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('contact')">Contact</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Legal</h4><ul>
-      <li><a onclick="document.getElementById('disclosure').scrollIntoView({behavior:'smooth'})">Affiliate Disclosure</a></li>
-      <li><a href="#">Privacy Policy</a></li>
-    </ul></div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
   </div>
 </footer>
+
+<div class="copper-line"></div>
+
+<section class="disclosure" id="disclosure">
+  <div class="disclosure-inner">
+    <div class="disc-badge fu">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Affiliate Disclosure
+    </div>
+    <h2 class="fu d1">Our <em>Disclosure</em></h2>
+    <div class="disc-divider fu d2"></div>
+    <p class="fu d2">Velvet Pantry participates in affiliate marketing programmes. This means that when you click on certain links on our website and complete a purchase, we may receive a small commission — at absolutely no extra cost to you.</p>
+    <p class="fu d3">This commission helps us maintain this platform and continue discovering and sharing the best kitchen products with our community. Every rupee earned goes back into making Velvet Pantry better for you.</p>
+    <p class="fu d3">We want to be completely transparent: our product recommendations are <strong style="color:var(--cream-dk);font-weight:400;">never</strong> influenced by whether or not a commission is earned. Every item featured on Velvet Pantry is selected purely on the basis of quality, usefulness, and our genuine belief in its value to you.</p>
+    <p class="fu d4">If you have any questions about our affiliate relationships or disclosure practices, please feel free to <a onclick="showPage('contact')" style="color:var(--copper-lt);border-bottom:1px solid rgba(196,137,90,.3);cursor:pointer">reach out to us</a> — we are always happy to be transparent.</p>
+  </div>
+</section>
 
 </div><!-- /page-about -->
 
@@ -948,10 +936,6 @@ img{display:block}
       <li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li>
       <li><a onclick="showPage('about')">About</a></li><li><a onclick="showPage('contact')">Contact</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Legal</h4><ul>
-      <li><a onclick="showPage('about');setTimeout(()=>document.getElementById('disclosure').scrollIntoView({behavior:'smooth'}),300)">Affiliate Disclosure</a></li>
-      <li><a href="#">Privacy Policy</a></li>
-    </ul></div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
@@ -1030,12 +1014,6 @@ img{display:block}
         <li><a onclick="showPage('about')">About</a></li>
         <li><a onclick="showPage('contact')">Contact</a></li>
       </ul></div>
-      <div class="footer-col"><h4>Legal</h4><ul>
-        <li><a onclick="showPage('about');setTimeout(()=>document.getElementById('disclosure').scrollIntoView({behavior:'smooth'}),300)">Affiliate Disclosure</a></li>
-      </ul></div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2025 Velvet Pantry. All rights reserved.</p>
     </div>
   </footer>
 
